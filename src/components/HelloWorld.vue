@@ -12,45 +12,58 @@
             sm="8"
             md="4"
           >
-            <v-card class="elevation-12">
-              <v-toolbar
-                color="primary"
-                dark
-                flat
-              >
-                <v-toolbar-title>Select a street</v-toolbar-title>
-                <v-spacer></v-spacer>
-                <v-icon>mdi-code-tags</v-icon>
-              </v-toolbar>
-              <v-card-text>
-                <v-form v-if="!selected">
-                  <v-autocomplete
-                    outlined
-                    label="Street"
-                    name="street"
-                    prepend-icon="mdi-map-search"
-                    :item-text="it => it[0]"
-                    :items="streets"
-                    @input="selected = $event"
-                  ></v-autocomplete>
-                </v-form>
-                <v-form v-else>
-                  <v-card-subtitle>
-                    Excelent! Please fill out some contact details..
-                  </v-card-subtitle>
-                  <v-text-field disabled :value="selected" label="Street" outlined></v-text-field>
-                  <v-text-field label="First Name" outlined></v-text-field>
-                  <v-text-field label="Last Name" outlined></v-text-field>
-                  <v-text-field label="Email Address" outlined></v-text-field>
-                </v-form>
-              </v-card-text>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn v-if="selected" @click="selected = ''">Back</v-btn>
-                <v-btn v-if="selected" color="primary">Submit</v-btn>
-                <v-btn v-else color="primary">Choose</v-btn>
-              </v-card-actions>
-            </v-card>
+            <v-stepper v-model="step">
+              <v-stepper-header>
+                <v-stepper-step step="str">Choose Street</v-stepper-step>
+                <v-stepper-step step="cf">Contact Form</v-stepper-step>
+              </v-stepper-header>
+              <v-stepper-items>
+                <v-stepper-content step="str">
+                  <v-card class="elevation-12">
+                    <v-card-text>
+                      <v-form v-if="step === 'str'">
+                        <v-autocomplete
+                          outlined
+                          label="Street"
+                          name="street"
+                          prepend-icon="mdi-map-search"
+                          :item-text="it => it[0]"
+                          :items="streets"
+                          @input="selected = $event"
+                        ></v-autocomplete>
+                      </v-form>
+                    </v-card-text>
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn :disabled="!selected" @click="step = 'cf'" color="primary">
+                        Choose
+                      </v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-stepper-content>
+                <v-stepper-content step="cf">
+                  <v-card class="elevation-12">
+                    <v-card-text>
+                      <v-form>
+                        <v-card-subtitle>
+                          Excelent! Please fill out some contact details..
+                        </v-card-subtitle>
+                        <v-text-field disabled :value="selected" label="Street" outlined>
+                        </v-text-field>
+                        <v-text-field label="First Name" outlined></v-text-field>
+                        <v-text-field label="Last Name" outlined></v-text-field>
+                        <v-text-field label="Email Address" outlined></v-text-field>
+                      </v-form>
+                    </v-card-text>
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn @click="goBack">Back</v-btn>
+                      <v-btn color="primary">Submit</v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-stepper-content>
+              </v-stepper-items>
+            </v-stepper>
           </v-col>
         </v-row>
       </v-container>
@@ -77,7 +90,14 @@ export default {
   data: () => ({
     streets: [],
     selected: '',
+    step: 'str',
   }),
+  methods: {
+    goBack() {
+      this.selected = '';
+      this.step = 'str';
+    },
+  },
   async created() {
     try {
       const resp = await axios.get('/data/just_streets.json');
