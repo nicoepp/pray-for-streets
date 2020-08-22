@@ -1,51 +1,54 @@
 <template>
- <l-map :zoom="zoom" :center="center" style="height: 500px; width: 100%">
-  <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
-   <l-polygon :lat-lngs="polygon.latlngs" :color="polygon.color"></l-polygon>
-   <l-geo-json :geojson="streets"></l-geo-json>
- </l-map>
+  <div class="prayer-map"></div>
 </template>
 
 <script>
-import L from 'leaflet';
-import {
-  LMap, LTileLayer, LPolygon, LGeoJson,
-} from 'vue2-leaflet';
+import mapboxgl from 'mapbox-gl';
 import axios from 'axios';
 
 export default {
   name: 'AdoptMap',
-  components: {
-    LMap, LTileLayer, LPolygon, LGeoJson,
-  },
   data() {
     return {
-      zoom: 16,
-      center: L.latLng(49.06212598820834, -122.36109312981736),
-      url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', // Replace 'c' with '{s}'
-      attribution:
-        '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-      polygon: {
-        latlngs: [
-          [49.0621259882, -122.36309312981736],
-          [49.0651259882, -122.36307888507733], // GeoJSON is longLat
-          [49.0651259882, -122.36488424187341],
-          [49.0621259882, -122.36309312981736],
-        ],
-        color: '#ff00ff',
-      },
       streets: [],
     };
+  },
+  methods: {
+    initMap() {
+      mapboxgl.accessToken = 'pk.eyJ1Ijoibmljb2VwcCIsImEiOiJja2U1eXA5ZHYxN3Q1MzBwOGVnemN1a2l5In0.l7OoW5D-wjPsMimVIMnXFA';
+      const map = new mapboxgl.Map({
+        container: this.$el,
+        style: 'mapbox://styles/mapbox/light-v10',
+        center: [-122.36109, 49.06213],
+        zoom: 15,
+      });
+      map.on('load', () => {
+        map.addSource('streets', {
+          type: 'geojson',
+          data: this.streets,
+        });
+        map.addLayer({
+          id: 'streets',
+          type: 'line',
+          source: 'streets',
+          paint: { 'line-width': 2 },
+        });
+      });
+    },
   },
   async created() {
     try {
       const resp = await axios.get('/data/streets.geo.json');
       this.streets = resp.data;
-    } catch (e) { console.log(); }
+    } catch (e) { console.log(e.message); }
+    this.initMap();
   },
 };
 </script>
 
 <style scoped>
-
+  .prayer-map {
+    height: 450px;
+    width: 100%;
+  }
 </style>
