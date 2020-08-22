@@ -4,14 +4,14 @@
       <v-col cols="12" sm="8" md="4">
         <v-stepper v-model="step">
           <v-stepper-header>
-            <v-stepper-step step="str">Choose Street</v-stepper-step>
+            <v-stepper-step step="st">Choose Street</v-stepper-step>
             <v-stepper-step step="cf">Contact Form</v-stepper-step>
           </v-stepper-header>
           <v-stepper-items>
-            <v-stepper-content step="str">
+            <v-stepper-content step="st">
               <v-card class="elevation-12">
                 <v-card-text>
-                  <v-form v-if="step === 'str'">
+                  <v-form v-if="step === 'st'">
                     <v-autocomplete
                       outlined
                       label="Street"
@@ -36,7 +36,7 @@
                 <v-card-text>
                   <v-form>
                     <v-card-subtitle>
-                      Excelent! Please fill out some contact details..
+                      Excellent! Please fill out some contact details..
                     </v-card-subtitle>
                     <v-text-field disabled :value="selected" label="Street" outlined>
                     </v-text-field>
@@ -80,12 +80,12 @@ export default {
   data: () => ({
     streets: [],
     selected: '',
-    step: 'str',
+    step: 'st',
   }),
   methods: {
     goBack() {
       this.selected = '';
-      this.step = 'str';
+      this.step = 'st';
     },
   },
   async created() {
