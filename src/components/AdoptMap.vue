@@ -34,6 +34,38 @@ export default {
           paint: { 'line-width': 2 },
         });
       });
+
+      const firstCoords = this.streets.features[0].geometry.coordinates[0];
+      // eslint-disable-next-line arrow-body-style
+      const bounds = this.streets.features.reduce((bounds1, feat) => {
+        return feat.geometry.coordinates.reduce(
+          (bounds2, coord) => bounds2.extend(coord),
+          bounds1,
+        );
+      }, new mapboxgl.LngLatBounds(firstCoords, firstCoords));
+
+      map.fitBounds(bounds, { padding: 20 });
+
+      map.on('click', 'streets', (e) => {
+        const prop = e.features[0].properties;
+
+        new mapboxgl.Popup()
+          .setLngLat(e.lngLat)
+          .setHTML(`<b>${prop.STREET_NAME}</b> <br> ${prop.FROM_STREET} - ${prop.TO_STREET}`)
+          .addTo(map);
+      });
+
+      map.on('mouseenter', 'streets', () => {
+        map.getCanvas().style.cursor = 'pointer';
+      });
+
+      // Change it back to a pointer when it leaves.
+      map.on('mouseleave', 'streets', () => {
+        map.getCanvas().style.cursor = '';
+      });
+
+      map.addControl(new mapboxgl.NavigationControl());
+      map.addControl(new mapboxgl.FullscreenControl());
     },
   },
   async created() {
