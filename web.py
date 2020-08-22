@@ -11,5 +11,7 @@ def hello():
     return app.send_static_file('index.html')
 
 
+# http://whitenoise.evans.io/en/stable/flask.html
+# https://blog.miguelgrinberg.com/post/how-to-deploy-a-react--flask-project
 if __name__ == '__main__':
     app.run()

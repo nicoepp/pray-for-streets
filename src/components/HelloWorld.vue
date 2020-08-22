@@ -5,8 +5,10 @@
         <v-stepper v-model="step">
           <v-stepper-header>
             <v-stepper-step step="st">Choose Street</v-stepper-step>
+            <v-stepper-step step="m">Map</v-stepper-step>
             <v-stepper-step step="cf">Contact Form</v-stepper-step>
           </v-stepper-header>
+
           <v-stepper-items>
             <v-stepper-content step="st">
               <v-card class="elevation-12">
@@ -25,9 +27,18 @@
                 </v-card-text>
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn :disabled="!selected" @click="step = 'cf'" color="primary">
+                  <v-btn :disabled="!selected" @click="step = 'm'" color="primary">
                     Choose
                   </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-stepper-content>
+            <v-stepper-content step="m">
+              <v-card class="elevation-12">
+                <adopt-map></adopt-map>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn @click="step = 'cf'" color="primary">Next</v-btn>
                 </v-card-actions>
               </v-card>
             </v-stepper-content>
@@ -61,6 +72,7 @@
 
 <script>
 import axios from 'axios';
+import AdoptMap from '@/components/AdoptMap.vue';
 
 /* Use:
 *  Autocomplete component
@@ -76,7 +88,7 @@ import axios from 'axios';
 
 export default {
   name: 'HelloWorld',
-
+  components: { AdoptMap },
   data: () => ({
     streets: [],
     selected: '',
