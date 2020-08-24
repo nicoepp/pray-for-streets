@@ -24,6 +24,7 @@
                       @input="selected = $event"
                     ></v-autocomplete>
                   </v-form>
+                  <adopt-map v-if="combined" :street-name="selected"></adopt-map>
                 </v-card-text>
                 <v-card-actions>
                   <v-spacer></v-spacer>
@@ -93,6 +94,7 @@ export default {
     streets: [],
     selected: '',
     step: 'st',
+    combined: false,
   }),
   methods: {
     goBack() {
