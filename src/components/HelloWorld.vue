@@ -35,7 +35,7 @@
             </v-stepper-content>
             <v-stepper-content step="m">
               <v-card class="elevation-12">
-                <adopt-map></adopt-map>
+                <adopt-map v-if="step === 'm'" :street-name="selected"></adopt-map>
                 <v-card-actions>
                   <v-spacer></v-spacer>
                   <v-btn @click="step = 'cf'" color="primary">Next</v-btn>
