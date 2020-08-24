@@ -5,7 +5,7 @@
       color="primary"
       dark
     >
-      <v-toolbar-title>Adopt a Street</v-toolbar-title>
+      <v-toolbar-title>Pray for Streets</v-toolbar-title>
     </v-app-bar>
 
     <v-main>

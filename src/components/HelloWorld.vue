@@ -39,6 +39,7 @@
                 <adopt-map v-if="step === 'm'" :street-name="selected"></adopt-map>
                 <v-card-actions>
                   <v-spacer></v-spacer>
+                  <v-btn @click="goBack">Back</v-btn>
                   <v-btn @click="step = 'cf'" color="primary">Next</v-btn>
                 </v-card-actions>
               </v-card>
@@ -48,7 +49,7 @@
                 <v-card-text>
                   <v-form>
                     <v-card-subtitle>
-                      Excellent! Please fill out some contact details..
+                      Please fill out contact details and submit to sign up and receive a reminder.
                     </v-card-subtitle>
                     <v-text-field disabled :value="selected" label="Street" outlined>
                     </v-text-field>
@@ -59,7 +60,7 @@
                 </v-card-text>
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn @click="goBack">Back</v-btn>
+                  <v-btn @click="step = 'm'">Back</v-btn>
                   <v-btn color="primary">Submit</v-btn>
                 </v-card-actions>
               </v-card>

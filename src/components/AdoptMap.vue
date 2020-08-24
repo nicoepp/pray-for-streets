@@ -38,7 +38,7 @@ export default {
         });
       });
 
-      if (this.streets.features.length) {
+      if (this.streets?.features?.length) {
         this.fitBounds();
       }
 
@@ -89,7 +89,7 @@ export default {
       try {
         await this.getStreetData(name);
         this.map.getSource('streets').setData(this.streets);
-        if (this.streets.features.length) {
+        if (this.streets?.features?.length) {
           this.fitBounds();
         }
       } catch (e) { console.log(e.message); }
