@@ -15,5 +15,19 @@ def main():
     f.close()
 
 
+def geometry():
+    df = gpd.read_file('/home/nico/Downloads/Roads.geojson')
+    street_names = df['STREET_NAME'].unique().tolist()
+    df = df[['OBJECTID', 'STREET_NAME', 'ROAD_CLASSIFICATION', 'FROM_STREET',
+             'TO_STREET', 'YEAR_CONSTRUCTED', 'DEACTIVATION_DATE', 'geometry']]
+    for street in street_names:
+        if not street or street == 'N/A':
+            continue
+        norm_street = street.lower().replace(' ', '_').replace('/', '_')
+        df2 = df[df['STREET_NAME'] == street]
+        with open(f'public/data/streets/{norm_street}.geo.json', 'w+') as f:
+            f.write(df2.to_json())
+
+
 if __name__ == '__main__':
-    main()
+    geometry()
