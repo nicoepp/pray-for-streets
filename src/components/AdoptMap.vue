@@ -4,11 +4,10 @@
 
 <script>
 import mapboxgl from 'mapbox-gl';
-import axios from 'axios';
 
 export default {
   name: 'AdoptMap',
-  props: ['streetName'],
+  props: ['streetGeoJson'],
   data() {
     return {
       map: {},
@@ -28,7 +27,7 @@ export default {
       map.on('load', () => {
         map.addSource('streets', {
           type: 'geojson',
-          data: this.streets,
+          data: this.streetGeoJson,
         });
         map.addLayer({
           id: 'streets',
@@ -38,7 +37,7 @@ export default {
         });
       });
 
-      if (this.streets?.features?.length) {
+      if (this.streetGeoJson?.features?.length) {
         this.fitBounds();
       }
 
@@ -64,9 +63,9 @@ export default {
       // map.addControl(new mapboxgl.FullscreenControl());
     },
     fitBounds() {
-      const firstCoords = this.streets.features[0].geometry.coordinates[0];
+      const firstCoords = this.streetGeoJson.features[0].geometry.coordinates[0];
       // eslint-disable-next-line arrow-body-style
-      const bounds = this.streets.features.reduce((bounds1, feat) => {
+      const bounds = this.streetGeoJson.features.reduce((bounds1, feat) => {
         return feat.geometry.coordinates.reduce(
           (bounds2, coord) => bounds2.extend(coord),
           bounds1,
@@ -75,30 +74,16 @@ export default {
 
       this.map.fitBounds(bounds, { padding: 20 });
     },
-    async getStreetData(name) {
-      if (!name) return;
-      let street = name.toLowerCase();
-      street = street.replace(' ', '_').replace(' ', '_');
-      street = street.replace('/', '_');
-      const resp = await axios.get(`/data/streets/${street}.geo.json`);
-      this.streets = resp.data;
-    },
   },
   watch: {
-    async streetName(name) {
-      try {
-        await this.getStreetData(name);
-        this.map.getSource('streets').setData(this.streets);
-        if (this.streets?.features?.length) {
-          this.fitBounds();
-        }
-      } catch (e) { console.log(e.message); }
+    streetGeoJson(geoJson) {
+      this.map.getSource('streets').setData(geoJson);
+      if (geoJson?.features?.length) {
+        this.fitBounds();
+      }
     },
   },
-  async created() {
-    try {
-      await this.getStreetData(this.streetName);
-    } catch (e) { console.log(e.message); }
+  mounted() {
     this.initMap();
   },
 };

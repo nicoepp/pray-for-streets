@@ -24,7 +24,7 @@
                       @input="selected = $event"
                     ></v-autocomplete>
                   </v-form>
-                  <adopt-map v-if="combined" :street-name="selected"></adopt-map>
+                  <adopt-map v-if="combined" :street-geo-json="street_features"></adopt-map>
                 </v-card-text>
                 <v-card-actions>
                   <v-spacer></v-spacer>
@@ -36,7 +36,8 @@
             </v-stepper-content>
             <v-stepper-content step="m">
               <v-card class="elevation-12">
-                <adopt-map v-if="step === 'm'" :street-name="selected"></adopt-map>
+                <adopt-map v-if="step === 'm'" :street-geo-json="street_features">
+                </adopt-map>
                 <v-card-actions>
                   <v-spacer></v-spacer>
                   <v-btn @click="goBack">Back</v-btn>
@@ -94,6 +95,10 @@ export default {
   data: () => ({
     streets: [],
     selected: '',
+    street_features: {
+      type: 'FeatureCollection',
+      features: [],
+    },
     step: 'st',
     combined: false,
   }),
@@ -101,6 +106,22 @@ export default {
     goBack() {
       this.selected = '';
       this.step = 'st';
+    },
+    async getStreetData(name) {
+      if (!name) throw Error('Name is not defined');
+      let street = name.toLowerCase();
+      street = street.replace(' ', '_').replace(' ', '_');
+      street = street.replace('/', '_');
+      const resp = await axios.get(`/data/streets/${street}.geo.json`);
+      return resp.data;
+    },
+  },
+  watch: {
+    async selected(val) {
+      if (!val) return;
+      try {
+        this.street_features = await this.getStreetData(val);
+      } catch (e) { console.log(e.message); }
     },
   },
   async created() {
