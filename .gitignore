@@ -23,3 +23,6 @@ pnpm-debug.log*
 
 # Generated data
 /public/data/streets/
+
+# Build files
+/dist/
