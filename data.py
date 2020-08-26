@@ -29,5 +29,12 @@ def geometry():
             f.write(df2.to_json())
 
 
+def all_geo_in_one_file():
+    df = gpd.read_file('/home/nico/Downloads/Roads.geojson')
+    df2 = df[['STREET_NAME', 'geometry']]
+    with open('/home/nico/Downloads/CompactRoads.geo.json', 'w+') as f:
+        f.write(df2.to_json())
+
+
 if __name__ == '__main__':
-    geometry()
+    all_geo_in_one_file()
