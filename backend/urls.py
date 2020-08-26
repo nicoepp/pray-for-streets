@@ -19,6 +19,6 @@ from django.urls import include, path
 from .streetsignup import urls as signup_urls
 
 urlpatterns = [
-    path('signup/', include(signup_urls)),
     path('admin/', admin.site.urls),
+    path('', include(signup_urls)),
 ]
