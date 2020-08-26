@@ -26,3 +26,6 @@ pnpm-debug.log*
 
 # Build files
 /dist/
+
+# Database
+/db.sqlite3
