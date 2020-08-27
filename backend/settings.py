@@ -55,7 +55,8 @@ ROOT_URLCONF = 'backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        # Add dist to
+        'DIRS': ['dist'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -114,8 +115,11 @@ USE_L10N = True
 
 USE_TZ = True
 
+# Include django_heroku here.
+# So we can overwrite STATIC_ROOT
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'dist' / 'static'

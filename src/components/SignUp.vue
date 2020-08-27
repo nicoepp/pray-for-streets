@@ -126,8 +126,10 @@ export default {
   },
   async created() {
     try {
-      const resp = await axios.get('/data/just_streets.json');
-      this.streets = resp.data;
+      const resp = await axios.get('/api/subscriptions'); // Just for testing. Should get all.
+      if (resp.data?.subscriptions) {
+        this.streets = resp.data.subscriptions;
+      }
     } catch (e) { console.log(); }
   },
 };
