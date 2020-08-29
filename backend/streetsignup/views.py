@@ -1,14 +1,20 @@
-from django.shortcuts import render
+from django.db.models import Count
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.cache import never_cache
 from django.views.generic import TemplateView
 
-STREETS = ['MT LEHMAN RD', 'HAMM RD', 'TOWNLINE RD', 'CLEARBROOK RD', 'LAXTON ST', 'COLUMBIA ST', 'MONTGOMERY AVE',
-           'GLADWIN RD', 'MCCALLUM RD', 'SHORT RD', 'FARMER RD', 'MCKENZIE RD']
+from backend.streetsignup.models import Street, Subscription
 
 # Serve Vue Application
 index_view = never_cache(TemplateView.as_view(template_name='index.html'))
 
 
-def subscriptions(request):
-    return JsonResponse({'subscriptions': STREETS})
+def all_streets(request):
+    return JsonResponse({'streets': list(Street.objects.values('id', 'name', subs=Count('subscription')))})
+
+
+def street_geojson(request, street_pk):
+    street = get_object_or_404(Street, pk=street_pk)
+    geojson_dict = street.get_geojson()
+    return JsonResponse(geojson_dict)

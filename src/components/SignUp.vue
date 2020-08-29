@@ -19,7 +19,8 @@
                       label="Street"
                       name="street"
                       prepend-icon="mdi-map-search"
-                      :item-text="it => it[0]"
+                      :item-value="item => item"
+                      item-text="name"
                       :items="streets"
                       @input="selected = $event"
                     ></v-autocomplete>
@@ -48,11 +49,11 @@
             <v-stepper-content step="cf">
               <v-card class="elevation-12">
                 <v-card-text>
-                  <v-form>
+                  <v-form v-if="step === 'cf'">
                     <v-card-subtitle>
                       Please fill out contact details and submit to sign up and receive a reminder.
                     </v-card-subtitle>
-                    <v-text-field disabled :value="selected" label="Street" outlined>
+                    <v-text-field disabled :value="selected.name" label="Street" outlined>
                     </v-text-field>
                     <v-text-field label="First Name" outlined></v-text-field>
                     <v-text-field label="Last Name" outlined></v-text-field>
@@ -94,7 +95,7 @@ export default {
   components: { AdoptMap },
   data: () => ({
     streets: [],
-    selected: '',
+    selected: null,
     street_features: {
       type: 'FeatureCollection',
       features: [],
@@ -104,31 +105,28 @@ export default {
   }),
   methods: {
     goBack() {
-      this.selected = '';
+      this.selected = null;
       this.step = 'st';
     },
-    async getStreetData(name) {
-      if (!name) throw Error('Name is not defined');
-      let street = name.toLowerCase();
-      street = street.replace(' ', '_').replace(' ', '_');
-      street = street.replace('/', '_');
-      const resp = await axios.get(`/data/streets/${street}.geo.json`);
+    async getStreetData(streetId) {
+      if (!streetId) throw Error('Name is not defined');
+      const resp = await axios.get(`/api/streets/${streetId}.geo.json`);
       return resp.data;
     },
   },
   watch: {
-    async selected(val) {
-      if (!val) return;
+    async selected(obj) {
+      if (!obj?.id) return;
       try {
-        this.street_features = await this.getStreetData(val);
+        this.street_features = await this.getStreetData(obj.id);
       } catch (e) { console.log(e.message); }
     },
   },
   async created() {
     try {
-      const resp = await axios.get('/api/subscriptions'); // Just for testing. Should get all.
-      if (resp.data?.subscriptions) {
-        this.streets = resp.data.subscriptions;
+      const resp = await axios.get('/api/streets');
+      if (resp.data?.streets) {
+        this.streets = resp.data.streets;
       }
     } catch (e) { console.log(); }
   },
