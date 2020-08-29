@@ -18,3 +18,7 @@ def street_geojson(request, street_pk):
     street = get_object_or_404(Street, pk=street_pk)
     geojson_dict = street.get_geojson()
     return JsonResponse(geojson_dict)
+
+
+def covered_streets(request):
+    return JsonResponse(Subscription.covered_streets_geojson())

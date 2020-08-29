@@ -25,7 +25,7 @@
                       @input="selected = $event"
                     ></v-autocomplete>
                   </v-form>
-                  <adopt-map v-if="combined" :street-geo-json="street_features"></adopt-map>
+                  <adopt-map v-if="combined" :street-geo-json="covered_streets"></adopt-map>
                 </v-card-text>
                 <v-card-actions>
                   <v-spacer></v-spacer>
@@ -100,6 +100,10 @@ export default {
       type: 'FeatureCollection',
       features: [],
     },
+    covered_streets: {
+      type: 'FeatureCollection',
+      features: [],
+    },
     step: 'st',
     combined: false,
   }),
@@ -128,6 +132,9 @@ export default {
       if (resp.data?.streets) {
         this.streets = resp.data.streets;
       }
+
+      const resp2 = await axios.get('/api/streets/covered_streets.geo.json');
+      this.covered_streets = resp2.data;
     } catch (e) { console.log(); }
   },
 };
