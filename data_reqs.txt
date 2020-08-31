@@ -1,6 +1,0 @@
-geojsonio==0.0.3
-geopandas==0.8.1
-numpy==1.19.1
-pandas==1.1.0
-requests==2.24.0
-Shapely==1.7.0
