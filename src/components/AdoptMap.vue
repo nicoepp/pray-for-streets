@@ -35,11 +35,10 @@ export default {
           source: 'streets',
           paint: { 'line-width': 2 },
         });
+        if (this.streetGeoJson?.features?.length) {
+          this.fitBounds();
+        }
       });
-
-      if (this.streetGeoJson?.features?.length) {
-        this.fitBounds();
-      }
 
       map.on('click', 'streets', (e) => {
         const prop = e.features[0].properties;
@@ -77,7 +76,9 @@ export default {
   },
   watch: {
     streetGeoJson(geoJson) {
-      this.map.getSource('streets').setData(geoJson);
+      const source = this.map.getSource('streets');
+      if (!source) return;
+      source.setData(geoJson);
       if (geoJson?.features?.length) {
         this.fitBounds();
       }

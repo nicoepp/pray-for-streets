@@ -1,6 +1,10 @@
 module.exports = {
   outputDir: 'dist',
   assetsDir: 'static',
+  pages: {
+    index: 'src/main.js',
+    map: 'src/map.js',
+  },
   transpileDependencies: [
     'vuetify',
   ],
