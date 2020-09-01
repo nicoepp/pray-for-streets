@@ -9,11 +9,17 @@ class Street(models.Model):
         """ Returns a dict in GeoJSON format """
         return segments_to_geojson(self.segments.values('pk', 'path'), self.name)
 
+    def __str__(self):
+        return self.name
+
 
 class Segment(models.Model):
     street = models.ForeignKey(Street, related_name='segments', on_delete=models.CASCADE)
     objectid = models.IntegerField(unique=True, db_index=True)
     path = models.JSONField()
+
+    def __str__(self):
+        return f'Segment {self.objectid} - {self.street}'
 
 
 class Subscription(models.Model):
@@ -21,6 +27,12 @@ class Subscription(models.Model):
     name = models.CharField(max_length=30)
     email = models.EmailField()
     church = models.CharField(max_length=40)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f'{self.name}, {self.church}: {self.street.name}'
 
     @staticmethod
     def covered_streets_geojson():
