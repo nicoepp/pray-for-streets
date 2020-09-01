@@ -48,10 +48,20 @@
             </v-stepper-content>
             <v-stepper-content step="cf">
               <v-card>
-                <v-card-text>
+                <template v-if="submitSuccess">
+                  <v-card-title>Thank you!</v-card-title>
+                  <v-card-text>
+                    Your subscription was succesfully submitted! You will receive an confirmation
+                    Email shortly.
+                  </v-card-text>
+                </template>
+                <v-card-text v-else>
                   <v-form v-if="step === 'cf'" v-model="validRules">
-                    <v-card-subtitle>
+                    <v-card-subtitle v-if="!errorMessage">
                       Please fill out contact details and submit to sign up and receive a reminder.
+                    </v-card-subtitle>
+                    <v-card-subtitle v-else style="color: red">
+                      {{ errorMessage }}
                     </v-card-subtitle>
                     <v-text-field
                       disabled :value="selected.name" label="Street" outlined
@@ -132,6 +142,8 @@ export default {
       church: '',
       token: '',
     },
+    submitSuccess: false,
+    errorMessage: '',
     validRules: false,
     rules: { // eslint-disable-next-line arrow-parens
       name: [val => !!val || 'Required.', val => (val || '').length <= 30 || 'Max 30 characters'],
@@ -148,28 +160,42 @@ export default {
   }),
   computed: {
     formValid() {
-      return this.validRules && this.form.token;
+      return this.validRules && this.form.token && this.selected?.id > 0 && this.selected?.name;
     },
   },
   methods: {
     goBack() {
       this.selected = null;
       this.step = 'st';
+      this.submitSuccess = false;
     },
     async getStreetData(streetId) {
       if (!streetId) throw Error('Name is not defined');
       const resp = await axios.get(`/api/streets/${streetId}.geo.json`);
       return resp.data;
     },
-    submit() {
+    async submit() {
+      if (!this.selected?.id) return;
       const form = {
-        street_id: this.selected?.id,
         street_name: this.selected?.name || '',
         ...this.form,
       };
 
-      console.log(form);
-      console.log(this.form.token);
+      try {
+        const resp = await axios.post(`/api/streets/${this.selected.id}/subscribe`, form);
+        if (resp.data.success) {
+          this.submitSuccess = true;
+          this.errorMessage = '';
+          // eslint-disable-next-line no-multi-assign
+          this.form.name = this.form.email = this.form.church = this.form.token = '';
+        } else {
+          this.errorMessage = 'Sorry, something went wrong';
+          console.log(resp.data.success);
+        }
+      } catch (e) {
+        this.errorMessage = 'Sorry, something went wrong while submitting the form';
+        console.log(e.response.data);
+      }
     },
   },
   watch: {
