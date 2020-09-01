@@ -23,13 +23,19 @@
                       item-text="name"
                       :items="streets"
                       @input="selected = $event"
+                      :hint="warnHint"
+                      :error-messages="errorHint"
                     ></v-autocomplete>
                   </v-form>
                   <adopt-map v-if="combined" :street-geo-json="covered_streets"></adopt-map>
                 </v-card-text>
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn :disabled="!selected" @click="step = 'm'" color="primary">
+                  <v-btn
+                    :disabled="!selected || selected.subs >= MAX_PER_STREET"
+                    @click="step = 'm'"
+                    color="primary"
+                  >
                     Choose
                   </v-btn>
                 </v-card-actions>
@@ -120,6 +126,8 @@ import AdoptMap from '@/components/AdoptMap.vue';
 *  https://www.twilio.com/blog/2017/08/geospatial-analysis-python-geojson-geopandas.html
 */
 
+const MAX_PER_STREET = 3;
+
 export default {
   name: 'HelloWorld',
   components: { AdoptMap, VueRecaptcha },
@@ -161,6 +169,18 @@ export default {
   computed: {
     formValid() {
       return this.validRules && this.form.token && this.selected?.id > 0 && this.selected?.name;
+    },
+    warnHint() {
+      if (this.selected?.subs > 0) {
+        return `There are already ${this.selected?.subs} subscriptions for this street`;
+      }
+      return '';
+    },
+    errorHint() {
+      if (this.selected?.subs >= MAX_PER_STREET) {
+        return `${this.selected?.subs} subscriptions already. Please select another street.`;
+      }
+      return '';
     },
   },
   methods: {
