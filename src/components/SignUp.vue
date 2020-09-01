@@ -2,7 +2,7 @@
   <v-container class="fill-height" fluid>
     <v-row align="center" justify="center">
       <v-col cols="12" sm="8" md="4">
-        <v-stepper v-model="step">
+        <v-stepper v-model="step" class="elevation-6">
           <v-stepper-header>
             <v-stepper-step step="st">Choose Street</v-stepper-step>
             <v-stepper-step step="m">Map</v-stepper-step>
@@ -11,7 +11,7 @@
 
           <v-stepper-items>
             <v-stepper-content step="st">
-              <v-card class="elevation-12">
+              <v-card>
                 <v-card-text>
                   <v-form v-if="step === 'st'">
                     <v-autocomplete
@@ -36,7 +36,7 @@
               </v-card>
             </v-stepper-content>
             <v-stepper-content step="m">
-              <v-card class="elevation-12">
+              <v-card>
                 <adopt-map v-if="step === 'm'" :street-geo-json="street_features">
                 </adopt-map>
                 <v-card-actions>
@@ -47,23 +47,43 @@
               </v-card>
             </v-stepper-content>
             <v-stepper-content step="cf">
-              <v-card class="elevation-12">
+              <v-card>
                 <v-card-text>
-                  <v-form v-if="step === 'cf'">
+                  <v-form v-if="step === 'cf'" v-model="validRules">
                     <v-card-subtitle>
                       Please fill out contact details and submit to sign up and receive a reminder.
                     </v-card-subtitle>
-                    <v-text-field disabled :value="selected.name" label="Street" outlined>
-                    </v-text-field>
-                    <v-text-field label="First Name" outlined></v-text-field>
-                    <v-text-field label="Last Name" outlined></v-text-field>
-                    <v-text-field label="Email Address" outlined></v-text-field>
+                    <v-text-field
+                      disabled :value="selected.name" label="Street" outlined
+                    ></v-text-field>
+                    <v-text-field
+                      v-model="form.name" :rules="rules.name" label="Name" outlined
+                    ></v-text-field>
+                    <v-text-field
+                      v-model="form.email" :rules="rules.email" label="Email Address" outlined
+                      validate-on-blur
+                    ></v-text-field>
+                    <v-text-field
+                      v-model="form.church"
+                      :rules="rules.church"
+                      label="Church Affiliation"
+                      outlined
+                    ></v-text-field>
+                    <vue-recaptcha
+                      @verify="form.token = $event"
+                      @expired="form.token = ''"
+                      :sitekey="reCaptchaKey"
+                    ></vue-recaptcha>
+                    <div class="pt-5">
+                      Disclaimer: Your information will not be used for marketing purposes,
+                      only for this event.
+                    </div>
                   </v-form>
                 </v-card-text>
                 <v-card-actions>
                   <v-spacer></v-spacer>
                   <v-btn @click="step = 'm'">Back</v-btn>
-                  <v-btn color="primary">Submit</v-btn>
+                  <v-btn @click="submit" color="primary" :disabled="!formValid">Submit</v-btn>
                 </v-card-actions>
               </v-card>
             </v-stepper-content>
@@ -76,6 +96,7 @@
 
 <script>
 import axios from 'axios';
+import VueRecaptcha from 'vue-recaptcha';
 import AdoptMap from '@/components/AdoptMap.vue';
 
 /* Use:
@@ -84,7 +105,6 @@ import AdoptMap from '@/components/AdoptMap.vue';
 *
 *  Abbotsford Road data:
 *  https://opendata-abbotsford.hub.arcgis.com/datasets/roads/geoservice
-*  https://maps.abbotsford.ca/arcgis/rest/services/GeocortexExt/WebMap/MapServer/194/query?where=STREET_NAME%20%3D%20%270%20AVE%27&outFields=OBJECTID,STREET_NAME,FROM_STREET,TO_STREET&returnGeometry=false&outSR=4326&f=json
 *  https://mol.rbwm.gov.uk/mol/map/#zoom=8&lat=51.47718&lon=-0.62927
 *  https://github.com/triedeti/Leaflet.streetlabels
 *  https://www.twilio.com/blog/2017/08/geospatial-analysis-python-geojson-geopandas.html
@@ -92,7 +112,7 @@ import AdoptMap from '@/components/AdoptMap.vue';
 
 export default {
   name: 'HelloWorld',
-  components: { AdoptMap },
+  components: { AdoptMap, VueRecaptcha },
   data: () => ({
     streets: [],
     selected: null,
@@ -106,7 +126,31 @@ export default {
     },
     step: 'st',
     combined: false,
+    form: {
+      name: '',
+      email: '',
+      church: '',
+      token: '',
+    },
+    validRules: false,
+    rules: { // eslint-disable-next-line arrow-parens
+      name: [val => !!val || 'Required.', val => (val || '').length <= 30 || 'Max 30 characters'],
+      email: [
+        (value) => !!value || 'Required.',
+        (value) => {
+          const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+          return pattern.test(value) || 'Invalid e-mail.';
+        },
+      ], // eslint-disable-next-line arrow-parens
+      church: [val => !!val || 'Required.', val => (val || '').length <= 40 || 'Max 40 characters'],
+    },
+    reCaptchaKey: '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI',
   }),
+  computed: {
+    formValid() {
+      return this.validRules && this.form.token;
+    },
+  },
   methods: {
     goBack() {
       this.selected = null;
@@ -116,6 +160,16 @@ export default {
       if (!streetId) throw Error('Name is not defined');
       const resp = await axios.get(`/api/streets/${streetId}.geo.json`);
       return resp.data;
+    },
+    submit() {
+      const form = {
+        street_id: this.selected?.id,
+        street_name: this.selected?.name || '',
+        ...this.form,
+      };
+
+      console.log(form);
+      console.log(this.form.token);
     },
   },
   watch: {
