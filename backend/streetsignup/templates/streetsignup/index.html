@@ -1,116 +1,73 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-        <title>Pray for Streets</title>
-        <link rel="icon" type="image/x-icon" href="/static/assets/img/favicon.ico" />
-        <!-- Font Awesome icons (free version)-->
-        <script src="https://use.fontawesome.com/releases/v5.13.0/js/all.js" crossorigin="anonymous"></script>
-        <!-- Google fonts-->
-        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
-        <link href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
-        <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
-        <!-- Core theme CSS (includes Bootstrap)-->
-        <link href="/static/css/styles.css" rel="stylesheet" />
-    </head>
-    <body id="page-top">
-        <!-- Navigation-->
+{% extends 'streetsignup/base.html' %}
 
-        <!-- Masthead-->
-        <header class="masthead">
-            <div class="container">
-                <div class="masthead-subheading" style="margin-top: -160px;margin-bottom: 160px;">
-                    <img alt="event date" src="/static/assets/img/prayer-event-date.png">
-                </div>
-                <div class="masthead-heading text-uppercase">
-                    <img alt="event name" src="/static/assets/img/prayer-event-name.png">
-                </div>
+{% block navigation %}
+    <!-- Masthead-->
+    <header class="masthead">
+        <div class="container">
+            <div class="masthead-subheading" style="margin-top: -160px;margin-bottom: 160px;">
+                <img alt="event date" src="/static/assets/img/prayer-event-date.png">
             </div>
-        </header>
-
-        <!-- Buttons -->
-        <section class="page-section" id="services" style="padding-top: 0; padding-bottom: 10px; margin-top: -20px">
-            <div class="container">
-                <div class="row text-center">
-                    <div class="col-md-2 col-6 offset-md-1 pb-3">
-                        <a class="btn btn-primary btn-xl text-center" href="/map" style="width: 156px">
-                            <i class="fas fa-map-marked mr-2 fa-2x"></i><br>
-                            Map
-                        </a>
-                    </div>
-                    <div class="col-md-2 col-6 pb-3">
-                        <a class="btn btn-primary btn-xl text-center" href="#" style="width: 156px">
-                            <i class="fas fa-video mr-2 fa-2x"></i><br>
-                            Theme
-                        </a>
-                    </div>
-                    <div class="col-md-2 col-6 pb-3">
-                        <a class="btn btn-primary btn-xl text-center" href="#" style="width: 156px">
-                            <i class="fas fa-heart mr-2 fa-2x"></i><br>
-                            Stories
-                        </a>
-                    </div>
-                     <div class="col-md-2 col-6 pb-3">
-                        <a class="btn btn-primary btn-xl text-center" href="#" style="width: 156px">
-                            <i class="fas fa-info mr-2 fa-2x"></i><br>
-                             About
-                        </a>
-                    </div>
-                     <div class="col-md-2 col-6 pb-3">
-                        <a class="btn btn-primary btn-xl text-center" href="/signup">
-                            <i class="fas fa-location-arrow      mr-2 fa-2x"></i><br>
-                            Sign Up
-                        </a>
-                    </div>
-<!--                    <div class="col-md-4">-->
-<!--                        <span class="fa-stack fa-4x">-->
-<!--                            <i class="fas fa-circle fa-stack-2x text-primary"></i>-->
-<!--                            <i class="fas fa-lock fa-stack-1x fa-inverse"></i>-->
-<!--                        </span>-->
-<!--                        <h4 class="my-3">Web Security</h4>-->
-<!--                        <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima maxime quam architecto quo inventore harum ex magni, dicta impedit.</p>-->
-<!--                    </div>-->
-                </div>
-            </div>
-        </section>
-
-        <!-- Team-->
-        <section class="page-section" id="team">
-            <div class="container">
-                <div class="text-center">
-                    <h2 class="section-heading text-uppercase">The Event</h2>
-<!--                    <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>-->
-                </div>
-                <div class="row">
-                    <div class="col-lg-8 mx-auto text-center">
-                        <p class="large text-muted">
-                            Join us to see every home, every street in Abbotsford being systematically prayed over. For
-                            one week, individuals and/or families making a commitment to walk and saturate with prayer
-                            the homes and businesses in their path. This is the Abbotsford Neighborhood Prayer Walk.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- Footer-->
-        <div class="copyright py-4 text-center text-white">
-            <div class="container">
-                <small>
-                    A city wide initiative through the ACLN [Abbotsford Christian Leaders Network]
-                </small>
+            <div class="masthead-heading text-uppercase">
+                <img alt="event name" src="/static/assets/img/prayer-event-name.png">
             </div>
         </div>
-        <!-- Bootstrap core JS-->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
-        <!-- Third party plugin JS-->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
-        <!-- Contact form JS-->
+    </header>
 
-        <!-- Core theme JS-->
-<!--        <script src="js/scripts.js"></script>-->
-    </body>
-</html>
+    <!-- Buttons -->
+    <section class="page-section" id="services" style="padding-top: 0; padding-bottom: 10px; margin-top: -20px">
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-md-2 col-6 offset-md-1 pb-3">
+                    <a class="btn btn-primary btn-xl text-center" href="/map" style="width: 156px">
+                        <i class="fas fa-map-marked mr-2 fa-2x"></i><br>
+                        Map
+                    </a>
+                </div>
+                <div class="col-md-2 col-6 pb-3">
+                    <a class="btn btn-primary btn-xl text-center" href="#" style="width: 156px">
+                        <i class="fas fa-video mr-2 fa-2x"></i><br>
+                        Theme2
+                    </a>
+                </div>
+                <div class="col-md-2 col-6 pb-3">
+                    <a class="btn btn-primary btn-xl text-center" href="#" style="width: 156px">
+                        <i class="fas fa-heart mr-2 fa-2x"></i><br>
+                        Stories
+                    </a>
+                </div>
+                 <div class="col-md-2 col-6 pb-3">
+                    <a class="btn btn-primary btn-xl text-center" href="#" style="width: 156px">
+                        <i class="fas fa-info mr-2 fa-2x"></i><br>
+                         About
+                    </a>
+                </div>
+                 <div class="col-md-2 col-6 pb-3">
+                    <a class="btn btn-primary btn-xl text-center" href="/signup">
+                        <i class="fas fa-location-arrow      mr-2 fa-2x"></i><br>
+                        Sign Up
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block content %}
+    <section class="page-section" id="team">
+        <div class="container">
+            <div class="text-center">
+                <h2 class="section-heading text-uppercase">The Event</h2>
+            <!--<h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>-->
+            </div>
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center">
+                    <p class="large text-muted">
+                        Join us to see every home, every street in Abbotsford being systematically prayed over. For
+                        one week, individuals and/or families making a commitment to walk and saturate with prayer
+                        the homes and businesses in their path. This is the Abbotsford Neighborhood Prayer Walk.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
