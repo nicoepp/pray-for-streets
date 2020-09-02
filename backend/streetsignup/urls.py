@@ -7,6 +7,7 @@ urlpatterns = [
     path('api/streets/covered_streets.geo.json', views.covered_streets, name='covered_streets'),
     path('api/streets/<int:street_pk>/subscribe', views.subscribe, name='subscribe'),
     path('api/streets', views.all_streets, name='all_streets'),
+    path('app', views.app_view, name='app'),
+    path('signup', views.signup_view, name='signup'),
     path('', views.index_view, name='index'),
-    path('', views.signup_view, name='signup'),
 ]

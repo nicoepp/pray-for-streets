@@ -2,7 +2,8 @@ module.exports = {
   outputDir: 'dist',
   assetsDir: 'static',
   pages: {
-    index: 'src/main.js',
+    app: 'src/main.js',
+    signup: 'src/signup.js',
     map: 'src/map.js',
   },
   transpileDependencies: [

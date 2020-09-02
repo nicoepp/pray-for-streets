@@ -1,7 +1,7 @@
 <template>
-  <v-container class="fill-height" fluid>
+  <v-container fluid>
     <v-row align="center" justify="center">
-      <v-col cols="12" sm="8" md="4">
+      <v-col cols="12" sm="8" md="5">
         <v-stepper v-model="step" class="elevation-6">
           <v-stepper-header>
             <v-stepper-step step="st">Choose Street</v-stepper-step>
@@ -126,8 +126,6 @@ import AdoptMap from '@/components/AdoptMap.vue';
 *  https://www.twilio.com/blog/2017/08/geospatial-analysis-python-geojson-geopandas.html
 */
 
-const MAX_PER_STREET = 3;
-
 export default {
   name: 'HelloWorld',
   components: { AdoptMap, VueRecaptcha },
@@ -144,6 +142,7 @@ export default {
     },
     step: 'st',
     combined: false,
+    MAX_PER_STREET: 3,
     form: {
       name: '',
       email: '',
@@ -177,7 +176,7 @@ export default {
       return '';
     },
     errorHint() {
-      if (this.selected?.subs >= MAX_PER_STREET) {
+      if (this.selected?.subs >= this.MAX_PER_STREET) {
         return `${this.selected?.subs} subscriptions already. Please select another street.`;
       }
       return '';

@@ -1,13 +1,5 @@
 <template>
   <v-app>
-    <v-app-bar
-      app
-      color="primary"
-      dark
-    >
-      <v-toolbar-title>Pray for Streets</v-toolbar-title>
-    </v-app-bar>
-
     <v-main>
       <HelloWorld/>
     </v-main>
