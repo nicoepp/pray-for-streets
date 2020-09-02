@@ -13,6 +13,7 @@ from backend.streetsignup.utils import recaptcha_valid
 
 # Serve Vue Application
 index_view = never_cache(TemplateView.as_view(template_name='index.html'))
+signup_view = never_cache(TemplateView.as_view(template_name='signup.html'))
 
 
 def all_streets(request):
