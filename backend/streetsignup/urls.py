@@ -8,6 +8,8 @@ urlpatterns = [
     path('api/streets/<int:street_pk>/subscribe', views.subscribe, name='subscribe'),
     path('api/streets', views.all_streets, name='all_streets'),
     path('app', views.app_view, name='app'),
+    path('mapapp', views.mapapp_view, name='mapapp'),
     path('signup', views.signup_view, name='signup'),
+    path('map', views.map_view, name='map'),
     path('', views.index_view, name='index'),
 ]

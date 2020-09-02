@@ -1,5 +1,5 @@
 <template>
-  <adopt-map :street-geo-json="covered_streets"></adopt-map>
+  <adopt-map style="height: 600px" :street-geo-json="covered_streets"></adopt-map>
 </template>
 
 <script>

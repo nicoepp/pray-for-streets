@@ -14,7 +14,9 @@ from backend.streetsignup.utils import recaptcha_valid
 # Serve Vue Application
 index_view = never_cache(TemplateView.as_view(template_name='streetsignup/index.html'))
 signup_view = never_cache(TemplateView.as_view(template_name='streetsignup/signup.html'))
+map_view = never_cache(TemplateView.as_view(template_name='streetsignup/map.html'))
 app_view = never_cache(TemplateView.as_view(template_name='app.html'))
+mapapp_view = never_cache(TemplateView.as_view(template_name='mapapp.html'))
 
 
 def all_streets(request):

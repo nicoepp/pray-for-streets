@@ -3,8 +3,7 @@ module.exports = {
   assetsDir: 'static',
   pages: {
     app: 'src/main.js',
-    signup: 'src/signup.js',
-    map: 'src/map.js',
+    mapapp: 'src/map.js',
   },
   transpileDependencies: [
     'vuetify',
