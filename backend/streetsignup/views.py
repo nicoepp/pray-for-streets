@@ -12,8 +12,8 @@ from backend.streetsignup.models import Street, Subscription
 from backend.streetsignup.utils import recaptcha_valid
 
 # Serve Vue Application
-index_view = never_cache(TemplateView.as_view(template_name='index.html'))
-signup_view = never_cache(TemplateView.as_view(template_name='signup.html'))
+index_view = never_cache(TemplateView.as_view(template_name='streetsignup/index.html'))
+signup_view = never_cache(TemplateView.as_view(template_name='streetsignup/signup.html'))
 app_view = never_cache(TemplateView.as_view(template_name='app.html'))
 
 
