@@ -126,6 +126,9 @@ import AdoptMap from '@/components/AdoptMap.vue';
 *  https://www.twilio.com/blog/2017/08/geospatial-analysis-python-geojson-geopandas.html
 */
 
+let reCaptchaKey = process.env.VUE_APP_RECAPTCHA_SITE_KEY;
+reCaptchaKey = reCaptchaKey || '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI';
+
 export default {
   name: 'HelloWorld',
   components: { AdoptMap, VueRecaptcha },
@@ -163,7 +166,7 @@ export default {
       ], // eslint-disable-next-line arrow-parens
       church: [val => !!val || 'Required.', val => (val || '').length <= 40 || 'Max 40 characters'],
     },
-    reCaptchaKey: '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI',
+    reCaptchaKey,
   }),
   computed: {
     formValid() {

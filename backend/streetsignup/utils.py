@@ -25,8 +25,8 @@ def segments_to_geojson(segments, street_name=None):
 
 
 def recaptcha_valid(token, remoteip=None):
-    if 'RECAPTCHA_SECRET' in os.environ:
-        secret = os.environ['RECAPTCHA_SECRET']
+    if 'RECAPTCHA_SECRET_KEY' in os.environ:
+        secret = os.environ['RECAPTCHA_SECRET_KEY']
     else:
         secret = '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe'
     try:
