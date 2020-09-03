@@ -2,13 +2,15 @@
 
 {% block navigation %}
     <!-- Masthead-->
-    <header class="masthead">
+    <header class="masthead homepage">
         <div class="container">
-            <div class="masthead-subheading" style="margin-top: -160px;margin-bottom: 160px;">
-                <img alt="event date" src="/static/assets/img/prayer-event-date.png">
+            <div class="masthead-subheading">
+                Sept 27 - Oct 3 2020
             </div>
             <div class="masthead-heading text-uppercase">
-                <img alt="event name" src="/static/assets/img/prayer-event-name.png">
+                <div class="first">Abbotsford</div>
+                <div class="second">Neighbourhood</div>
+                <div class="third">Prayer Walk</div>
             </div>
         </div>
     </header>
@@ -41,7 +43,7 @@
                          About
                     </a>
                 </div>
-                 <div class="col-md-2 col-6 pb-3">
+                 <div class="col-md-2 col-6 pb-3 offset-md-0 offset-3">
                     <a class="btn btn-primary btn-xl text-center" href="/signup">
                         <i class="fas fa-location-arrow      mr-2 fa-2x"></i><br>
                         Sign Up
@@ -70,4 +72,54 @@
             </div>
         </div>
     </section>
+{% endblock %}
+
+{% block styles %}
+  <style>
+    .masthead.homepage .first {
+        letter-spacing: .1rem;
+        line-height: 8rem;
+        font-size: 190px;
+    }
+    .masthead.homepage .second {
+        letter-spacing: .075rem;
+        line-height: 8rem;
+        font-size: 145px;
+    }
+    .masthead.homepage .third {
+        letter-spacing: .12rem;
+        line-height: 8rem;
+        font-size: 175px
+    }
+    .masthead.homepage .masthead-subheading {
+        font-size: 70px;
+        font-style: normal;
+        margin-top: -160px;
+        margin-bottom: 160px;
+    }
+
+    @media (max-width: 800px) {
+            .masthead.homepage .first {
+            letter-spacing: .1rem;
+            line-height: 4rem;
+            font-size: 95px;
+        }
+        .masthead.homepage .second {
+            letter-spacing: .075rem;
+            line-height: 4rem;
+            font-size: 72px;
+        }
+        .masthead.homepage .third {
+            letter-spacing: .12rem;
+            line-height: 4rem;
+            font-size: 87px
+        }
+        .masthead.homepage .masthead-subheading {
+            font-size: 45px;
+            font-style: normal;
+            margin-top: -80px;
+            margin-bottom: 80px;
+        }
+    }
+  </style>
 {% endblock %}
