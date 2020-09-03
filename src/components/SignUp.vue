@@ -96,7 +96,7 @@
                     </div>
                   </v-form>
                 </v-card-text>
-                <v-card-actions>
+                <v-card-actions v-if="!submitSuccess">
                   <v-spacer></v-spacer>
                   <v-btn @click="step = 'm'">Back</v-btn>
                   <v-btn @click="submit" color="primary" :disabled="!formValid">Submit</v-btn>
