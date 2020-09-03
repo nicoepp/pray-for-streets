@@ -7,7 +7,7 @@ import mapboxgl from 'mapbox-gl';
 
 export default {
   name: 'AdoptMap',
-  props: ['streetGeoJson'],
+  props: ['streetGeoJson', 'controls'],
   data() {
     return {
       map: {},
@@ -58,8 +58,10 @@ export default {
         map.getCanvas().style.cursor = '';
       });
 
-      // map.addControl(new mapboxgl.NavigationControl());
-      // map.addControl(new mapboxgl.FullscreenControl());
+      if (this.controls) {
+        map.addControl(new mapboxgl.NavigationControl());
+        map.addControl(new mapboxgl.FullscreenControl());
+      }
     },
     fitBounds() {
       const firstCoords = this.streetGeoJson.features[0].geometry.coordinates[0];
