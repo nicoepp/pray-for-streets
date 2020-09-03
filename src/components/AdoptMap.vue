@@ -33,7 +33,10 @@ export default {
           id: 'streets',
           type: 'line',
           source: 'streets',
-          paint: { 'line-width': 2 },
+          paint: {
+            'line-width': 2,
+            'line-color': '#fed136',
+          },
         });
         if (this.streetGeoJson?.features?.length) {
           this.fitBounds();
