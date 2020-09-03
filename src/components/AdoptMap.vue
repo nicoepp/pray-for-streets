@@ -45,7 +45,7 @@ export default {
 
         new mapboxgl.Popup()
           .setLngLat(e.lngLat)
-          .setHTML(`<b>${prop.STREET_NAME}</b> <br> ${prop.FROM_STREET} - ${prop.TO_STREET}`)
+          .setHTML(`<b>${prop.STREET_NAME}</b>`)
           .addTo(map);
       });
 
