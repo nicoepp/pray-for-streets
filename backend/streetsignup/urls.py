@@ -11,5 +11,6 @@ urlpatterns = [
     path('mapapp', views.mapapp_view, name='mapapp'),
     path('signup', views.signup_view, name='signup'),
     path('map', views.map_view, name='map'),
+    path('inbound_email', views.receive_email, name='email'),
     path('', views.index_view, name='index'),
 ]

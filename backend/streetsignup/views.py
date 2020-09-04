@@ -6,6 +6,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
 from django.views.generic import TemplateView
 
 from backend.streetsignup.models import Street, Subscription
@@ -61,3 +62,16 @@ def subscribe(request, street_pk):
             return JsonResponse(resp, status=400)
 
     return JsonResponse({'success': False}, status=404)
+
+
+@csrf_exempt
+@require_POST
+def receive_email(request):
+    if request.method == 'POST':
+        print('--- Email from SendGrid ---')
+        print('From:', request.POST.get('from'))
+        print('To:', request.POST.get('to'))
+        print('Subject:', request.POST.get('subject'))
+        print('Body:', request.POST.get('text'))
+    return HttpResponse(status=200)
+
