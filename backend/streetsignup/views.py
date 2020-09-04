@@ -10,7 +10,7 @@ from django.views.decorators.http import require_POST
 from django.views.generic import TemplateView
 
 from backend.streetsignup.models import Street, Subscription
-from backend.streetsignup.utils import recaptcha_valid
+from backend.streetsignup.utils import recaptcha_valid, send_confirmation_mail
 
 # Serve Vue Application
 index_view = never_cache(TemplateView.as_view(template_name='streetsignup/index.html'))
@@ -53,7 +53,12 @@ def subscribe(request, street_pk):
             if not recaptcha_valid(form.get('token', '')):
                 return JsonResponse({'success': False, 'token': 'reCAPTCHA invalid'}, status=400)
             subs.save()
-            return JsonResponse({'success': True, 'subscription_id': subs.pk})
+            resp = send_confirmation_mail(subs.name, subs.email, street_name=street.name)
+            if resp:
+                return JsonResponse({'success': True, 'subscription_id': subs.pk})
+            else:
+                # Delete subscription or mark confirmation as unsent
+                return JsonResponse({'success': False, 'email': "Couldn't send confirmation email"}, status=500)
         except Street.DoesNotExist as e:
             return JsonResponse({'success': False, 'street_id': 'Street does not exist'}, status=400)
         except ValidationError as e:

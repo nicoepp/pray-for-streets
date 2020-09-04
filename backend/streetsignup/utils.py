@@ -1,5 +1,7 @@
 import json
 import os
+from sendgrid.helpers.mail import Mail, To
+from sendgrid import SendGridAPIClient
 import requests
 
 
@@ -43,3 +45,29 @@ def recaptcha_valid(token, remoteip=None):
     if 'success' not in data:
         return False
     return data['success']
+
+
+FROM_EMAIL = 'Abbotsford Neighbourhood Prayer Walk <info@prayforabbotsford.com>'
+TEMPLATE_ID = 'd-5f4bb94f40e3414a9784f9699b31e429'
+
+
+def send_confirmation_mail(name, email, street_name=''):
+    message = Mail(from_email=FROM_EMAIL, to_emails=[(email, name)])
+    # pass custom values for our HTML placeholders
+    message.dynamic_template_data = {
+        'person_name': name,
+        'street_name': street_name,
+    }
+    message.template_id = TEMPLATE_ID
+
+    try:
+        sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+        response = sg.send(message)
+        code, body, headers = response.status_code, response.body, response.headers
+        print(f"Confirmation email sent to: {name} <{email}>")
+        print(f"Response code: {code}, body: {body}")
+        return True
+    except Exception as e:
+        print("Confirmation email sending error: {0}".format(e))
+        print(f'Tried sending to: {name} <{email}>')
+        return False
