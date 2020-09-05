@@ -21,7 +21,11 @@ mapapp_view = never_cache(TemplateView.as_view(template_name='mapapp.html'))
 
 
 def all_streets(request):
-    return JsonResponse({'streets': list(Street.objects.values('id', 'name', subs=Count('subscription')))})
+    return JsonResponse({
+        'streets': list(Street.objects
+                              .order_by('name')
+                              .values('id', 'name', subs=Count('subscription')))
+    })
 
 
 def street_geojson(request, street_pk):

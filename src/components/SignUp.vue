@@ -46,12 +46,12 @@
               </v-card>
             </v-stepper-content>
             <v-stepper-content step="m">
-              <v-card>
+              <v-card v-if="step === 'm'">
                 <v-card-subtitle>
-                  This is the street you have chosen.
+                  You have chosen {{selected.name}}.<br>
                   Click BACK to choose a different street. Click NEXT for your registration.
                 </v-card-subtitle>
-                <adopt-map v-if="step === 'm'" :street-geo-json="street_features">
+                <adopt-map :street-geo-json="street_features">
                 </adopt-map>
                 <v-card-actions>
                   <v-spacer></v-spacer>
