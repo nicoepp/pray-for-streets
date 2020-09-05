@@ -6,13 +6,17 @@
           <v-stepper-header>
             <v-stepper-step step="st">Choose Street</v-stepper-step>
             <v-stepper-step step="m">Map</v-stepper-step>
-            <v-stepper-step step="cf">Contact Form</v-stepper-step>
+            <v-stepper-step step="rg">Register</v-stepper-step>
           </v-stepper-header>
 
           <v-stepper-items>
             <v-stepper-content step="st">
               <v-card>
                 <v-card-text>
+                  <v-card-subtitle class="pl-9 pt-0">
+                    Please choose one street per family or group.
+                    There is a maximum of 3 registrants per Street.
+                  </v-card-subtitle>
                   <v-form v-if="step === 'st'">
                     <v-autocomplete
                       outlined
@@ -43,26 +47,30 @@
             </v-stepper-content>
             <v-stepper-content step="m">
               <v-card>
+                <v-card-subtitle>
+                  This is the street you have chosen.
+                  Click BACK to choose a different street. Click NEXT for your registration.
+                </v-card-subtitle>
                 <adopt-map v-if="step === 'm'" :street-geo-json="street_features">
                 </adopt-map>
                 <v-card-actions>
                   <v-spacer></v-spacer>
                   <v-btn @click="goBack">Back</v-btn>
-                  <v-btn @click="step = 'cf'" color="primary">Next</v-btn>
+                  <v-btn @click="step = 'rg'" color="primary">Next</v-btn>
                 </v-card-actions>
               </v-card>
             </v-stepper-content>
-            <v-stepper-content step="cf">
+            <v-stepper-content step="rg">
               <v-card>
                 <template v-if="submitSuccess">
                   <v-card-title>Thank you!</v-card-title>
                   <v-card-text>
-                    Your subscription was succesfully submitted! You will receive an confirmation
+                    Your registration was succesfully submitted! You will receive an confirmation
                     Email shortly.
                   </v-card-text>
                 </template>
                 <v-card-text v-else>
-                  <v-form v-if="step === 'cf'" v-model="validRules">
+                  <v-form v-if="step === 'rg'" v-model="validRules">
                     <v-card-subtitle v-if="!errorMessage">
                       Please fill out contact details and submit to sign up and receive a reminder.
                     </v-card-subtitle>
@@ -174,7 +182,8 @@ export default {
     },
     warnHint() {
       if (this.selected?.subs > 0) {
-        return `There are already ${this.selected?.subs} subscriptions for this street`;
+        return `There are already ${this.selected?.subs} subscriptions for this street. `
+               + 'You may continue to register.';
       }
       return '';
     },
