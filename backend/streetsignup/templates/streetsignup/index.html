@@ -16,36 +16,36 @@
     </header>
 
     <!-- Buttons -->
-    <section class="page-section" id="services" style="padding-top: 0; padding-bottom: 10px; margin-top: -20px">
+    <section class="page-section" id="buttons">
         <div class="container">
             <div class="row text-center">
                 <div class="col-lg-2 offset-lg-1   col-md-4   col-6   pb-3">
-                    <a class="btn btn-primary btn-xl text-center" href="/map" style="width: 156px">
-                        <i class="fas fa-map-marked mr-2 fa-2x"></i><br>
+                    <a class="btn btn-primary btn-xl" href="/map">
+                        <i class="fas fa-map-marked   mr-2 fa-2x"></i><br>
                         Map
                     </a>
                 </div>
                 <div class="col-lg-2   col-md-4   col-6   pb-3">
-                    <a class="btn btn-primary btn-xl text-center" href="#" style="width: 156px">
-                        <i class="fas fa-video mr-2 fa-2x"></i><br>
+                    <a class="btn btn-primary btn-xl" href="#">
+                        <i class="fas fa-video   mr-2 fa-2x"></i><br>
                         Theme
                     </a>
                 </div>
                 <div class="col-lg-2   col-md-4   col-6   pb-3">
-                    <a class="btn btn-primary btn-xl text-center" href="#" style="width: 156px">
-                        <i class="fas fa-heart mr-2 fa-2x"></i><br>
+                    <a class="btn btn-primary btn-xl" href="#">
+                        <i class="fas fa-heart   mr-2 fa-2x"></i><br>
                         Stories
                     </a>
                 </div>
                  <div class="col-lg-2 offset-lg-0   col-md-4 offset-md-2   col-6   pb-3">
-                    <a class="btn btn-primary btn-xl text-center" href="#" style="width: 156px">
-                        <i class="fas fa-info-circle mr-2 fa-2x"></i><br>
+                    <a class="btn btn-primary btn-xl" href="#">
+                        <i class="fas fa-info-circle   mr-2 fa-2x"></i><br>
                          About
                     </a>
                 </div>
                  <div class="col-lg-2 offset-lg-0   col-md-4 offset-md-0   col-6 offset-3   pb-3">
-                    <a class="btn btn-primary btn-xl text-center" href="/signup">
-                        <i class="fas fa-location-arrow      mr-2 fa-2x"></i><br>
+                    <a class="btn btn-primary btn-xl" href="/signup">
+                        <i class="fas fa-location-arrow   mr-2 fa-2x"></i><br>
                         Sign<span>&nbsp;</span>Up
                         <!-- nbsp so two words don't make button bigger -->
                     </a>
@@ -77,6 +77,16 @@
 
 {% block styles %}
   <style>
+    #buttons {
+        padding-top: 0;
+        padding-bottom: 10px;
+        margin-top: -20px;
+    }
+
+    #buttons .btn.btn-primary {
+        width: 156px;
+    }
+
     .masthead.homepage .first {
         letter-spacing: .1rem;
         line-height: 8rem;
