@@ -65,8 +65,9 @@
                 <template v-if="submitSuccess">
                   <v-card-title>Thank you!</v-card-title>
                   <v-card-text>
-                    Your registration was succesfully submitted! You will receive an confirmation
-                    Email shortly.
+                    Your registration was successfully submitted! You will receive a confirmation
+                    email shortly. In order to receive reminders about the event, please click
+                    the confirmation link in the email.
                   </v-card-text>
                 </template>
                 <v-card-text v-else>
