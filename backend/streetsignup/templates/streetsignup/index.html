@@ -4,13 +4,17 @@
     <!-- Masthead-->
     <header class="masthead homepage">
         <div class="container">
-            <div class="masthead-subheading">
+            <div class="masthead-subheading overheading">
                 Sept 27 - Oct 3 2020
             </div>
-            <div class="masthead-heading text-uppercase">
+            <div class="masthead-heading text-uppercase" style="margin-bottom: 2rem">
                 <div class="first">Abbotsford</div>
                 <div class="second">Neighbourhood</div>
                 <div class="third">Prayer Walk</div>
+            </div>
+
+            <div class="masthead-subheading covered">
+                {{ streets_covered }} out of {{ streets_total }} streets already covered
             </div>
         </div>
     </header>
@@ -102,11 +106,19 @@
         line-height: 8rem;
         font-size: 175px
     }
-    .masthead.homepage .masthead-subheading {
+    .masthead.homepage .masthead-subheading.overheading {
         font-size: 70px;
         font-style: normal;
         margin-top: -160px;
         margin-bottom: 160px;
+    }
+
+    .masthead.homepage .masthead-subheading.covered {
+        margin-bottom: 0;
+        font-style: normal;
+        color: #fed136;
+        position: relative;
+        top: 2.5vw;
     }
 
     @media (max-width: 800px) {
@@ -125,7 +137,7 @@
             line-height: 4rem;
             font-size: 87px
         }
-        .masthead.homepage .masthead-subheading {
+        .masthead.homepage .masthead-subheading.overheading {
             font-size: 45px;
             font-style: normal;
             margin-top: -80px;

@@ -12,12 +12,21 @@ from django.views.generic import TemplateView
 from backend.streetsignup.models import Street, Subscription
 from backend.streetsignup.utils import recaptcha_valid, send_confirmation_mail
 
-# Serve Vue Application
-index_view = never_cache(TemplateView.as_view(template_name='streetsignup/index.html'))
+# Host iframe for Vue App
 signup_view = never_cache(TemplateView.as_view(template_name='streetsignup/signup.html'))
 map_view = never_cache(TemplateView.as_view(template_name='streetsignup/map.html'))
+# Serve Vue Application
 app_view = never_cache(TemplateView.as_view(template_name='app.html'))
 mapapp_view = never_cache(TemplateView.as_view(template_name='mapapp.html'))
+
+
+@never_cache
+def index_view(request):
+    ctx = {
+        'streets_total': Street.objects.count(),
+        'streets_covered': Subscription.covered_streets_count()
+    }
+    return render(request, 'streetsignup/index.html', ctx)
 
 
 def all_streets(request):

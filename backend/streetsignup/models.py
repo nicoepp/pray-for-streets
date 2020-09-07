@@ -38,3 +38,7 @@ class Subscription(models.Model):
     def covered_streets_geojson():
         segments = Segment.objects.annotate(subs=models.Count('street__subscription')).filter(subs__gt=0)
         return segments_to_geojson(segments.values('pk', 'path', 'street__name'))
+
+    @staticmethod
+    def covered_streets_count():
+        return Street.objects.annotate(subs=models.Count('subscription')).filter(subs__gt=0).count()
