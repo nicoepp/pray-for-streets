@@ -18,6 +18,10 @@ map_view = never_cache(TemplateView.as_view(template_name='streetsignup/map.html
 # Serve Vue Application
 app_view = never_cache(TemplateView.as_view(template_name='app.html'))
 mapapp_view = never_cache(TemplateView.as_view(template_name='mapapp.html'))
+# Other pages
+about_view = never_cache(TemplateView.as_view(template_name='streetsignup/other/about.html'))
+media_view = never_cache(TemplateView.as_view(template_name='streetsignup/other/media.html'))
+stories_view = never_cache(TemplateView.as_view(template_name='streetsignup/other/stories.html'))
 
 
 @never_cache
