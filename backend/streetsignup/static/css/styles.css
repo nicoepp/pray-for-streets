@@ -10444,12 +10444,9 @@ header.masthead .masthead-heading {
   margin-bottom: 0;
 }
 
-section#contact {
-  background-color: #212529;
-  background-image: url("../assets/img/map-image.png");
-  background-repeat: no-repeat;
-  background-position: center;
-}
+/*section#contact {*/
+/*  ... */
+/*}*/
 section#contact .section-heading {
   color: #fff;
 }
@@ -10502,7 +10499,7 @@ section#contact form#contactForm :-ms-input-placeholder {
   font-family: 'FrederickSans Regular';
   font-style: normal;
   font-weight: normal;
-  src: local('FrederickSans Regular'), url('/static/fonts/FrederickSans.woff') format('woff');
+  src: local('FrederickSans Regular'), url('../fonts/FrederickSans.woff') format('woff');
 }
 
 
@@ -10510,7 +10507,7 @@ section#contact form#contactForm :-ms-input-placeholder {
 font-family: 'FrederickSans Italic';
 font-style: normal;
 font-weight: normal;
-src: local('FrederickSans Italic'), url('/static/fonts/FrederickSans-Italic.woff') format('woff');
+src: local('FrederickSans Italic'), url('../fonts/FrederickSans-Italic.woff') format('woff');
 }
 
 header.masthead .masthead-heading {
