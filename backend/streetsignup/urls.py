@@ -15,5 +15,7 @@ urlpatterns = [
     path('media', views.media_view, name='media'),        # "
     path('stories', views.stories_view, name='stories'),  # "
     path('inbound_email', views.receive_email, name='email'),
+    path('confirm_email/<token>', views.verify_email, name='verify_email'),
+    path('unsubscribe/<token>', views.unsubscribe_email, name='unsubscribe'),
     path('', views.index_view, name='index'),
 ]

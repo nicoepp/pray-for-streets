@@ -1,5 +1,6 @@
 import json
 import os
+from django.utils.crypto import get_random_string
 from sendgrid.helpers.mail import Mail, To
 from sendgrid import SendGridAPIClient
 import requests
@@ -51,12 +52,13 @@ FROM_EMAIL = 'Abbotsford Neighbourhood Prayer Walk <info@prayforabbotsford.com>'
 TEMPLATE_ID = 'd-5f4bb94f40e3414a9784f9699b31e429'
 
 
-def send_confirmation_mail(name, email, street_name=''):
+def send_confirmation_mail(name, email, token, street_name=''):
     message = Mail(from_email=FROM_EMAIL, to_emails=[(email, name)])
     # pass custom values for our HTML placeholders
     message.dynamic_template_data = {
         'person_name': name,
         'street_name': street_name,
+        'email_token': token,
     }
     message.template_id = TEMPLATE_ID
 
@@ -71,3 +73,7 @@ def send_confirmation_mail(name, email, street_name=''):
         print("Confirmation email sending error: {0}".format(e))
         print(f'Tried sending to: {name} <{email}>')
         return False
+
+
+def get_email_token():
+    return get_random_string(20)

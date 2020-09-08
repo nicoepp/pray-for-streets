@@ -1,0 +1,28 @@
+{% extends 'streetsignup/subpage.html' %}
+
+{% block subtitle %}
+    {% if success %}
+        Unsubscribe successful
+    {% else %}
+        Oops!
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <section class="page-section" id="team">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center" style="min-height: 250px">
+                    <p class="large text-muted">
+                        {% if success %}
+                            Your email has been successfully unsubscribed! You shouldn't receive
+                            reminders related to {{ street_name }} or other emails from us in the future.
+                        {% else %}
+                            Sorry, something went wrong. We could not unsubscribe you.
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

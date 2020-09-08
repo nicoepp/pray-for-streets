@@ -1,5 +1,5 @@
 from django.db import models
-from .utils import segments_to_geojson
+from .utils import segments_to_geojson, get_email_token
 
 
 class Street(models.Model):
@@ -27,6 +27,10 @@ class Subscription(models.Model):
     name = models.CharField(max_length=30)
     email = models.EmailField()
     church = models.CharField(max_length=40)
+
+    verification_token = models.SlugField(db_index=True, default=get_email_token)
+    verified = models.BooleanField(default=False)
+    unsubscribed = models.BooleanField(default=False)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

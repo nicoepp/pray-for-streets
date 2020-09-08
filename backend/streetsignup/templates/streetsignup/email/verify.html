@@ -1,0 +1,27 @@
+{% extends 'streetsignup/subpage.html' %}
+
+{% block title %}
+    {% if success %}
+        Thanks!
+    {% else %}
+        Oops!
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <section class="page-section" id="team">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center" style="min-height: 250px;">
+                    <h3 class="large text-muted">
+                        {% if success %}
+                            Thank you for confirming your email address!
+                        {% else %}
+                            Sorry, something went wrong. We could not verify your email address.
+                        {% endif %}
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

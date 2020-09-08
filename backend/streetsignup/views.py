@@ -70,7 +70,7 @@ def subscribe(request, street_pk):
             if not recaptcha_valid(form.get('token', '')):
                 return JsonResponse({'success': False, 'token': 'reCAPTCHA invalid'}, status=400)
             subs.save()
-            resp = send_confirmation_mail(subs.name, subs.email, street_name=street.name)
+            resp = send_confirmation_mail(subs.name, subs.email, street_name=street.name, token=subs.verification_token)
             if resp:
                 return JsonResponse({'success': True, 'subscription_id': subs.pk})
             else:
@@ -97,3 +97,24 @@ def receive_email(request):
         print('Body:', request.POST.get('text'))
     return HttpResponse(status=200)
 
+
+def verify_email(request, token):
+    all_subs = Subscription.objects.filter(verification_token=token)
+    success = all_subs.exists()
+    if success:
+        sub = all_subs.first()
+        sub.verified = True
+        sub.save()
+    return render(request, 'streetsignup/email/verify.html', {'success': success})
+
+
+def unsubscribe_email(request, token):
+    all_subs = Subscription.objects.filter(verification_token=token)
+    success = all_subs.exists()
+    street_name = ''
+    if success:
+        sub = all_subs.first()
+        sub.unsubscribed = True
+        sub.save()
+        street_name = sub.street.name
+    return render(request, 'streetsignup/email/unsubscribe.html', {'success': success, 'street_name': street_name})
