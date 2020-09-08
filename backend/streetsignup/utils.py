@@ -77,3 +77,25 @@ def send_confirmation_mail(name, email, token, street_name=''):
 
 def get_email_token():
     return get_random_string(20)
+
+
+def resend_mail(from_, to, subject, text):
+    resend_to = os.environ.get('RESEND_TO', None)
+    if not resend_to:
+        print('No RESEND_TO environ')
+        return False
+    noreply = 'noreply@prayforabbotsford.com'
+    staff = [resend_to]
+    message = Mail(from_email=noreply, to_emails=staff, subject=subject, plain_text_content=text)
+    message.reply_to = from_
+
+    try:
+        sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+        response = sg.send(message)
+        code, body, headers = response.status_code, response.body, response.headers
+        print(f"Email from {from_} with subject {subject} resent. {code}")
+        return True
+    except Exception as e:
+        print("Email resending error: {0}".format(e))
+        print(f'Tried sending email from {from_} with subject {subject}')
+        return False

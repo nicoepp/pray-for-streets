@@ -10,7 +10,7 @@ from django.views.decorators.http import require_POST
 from django.views.generic import TemplateView
 
 from backend.streetsignup.models import Street, Subscription
-from backend.streetsignup.utils import recaptcha_valid, send_confirmation_mail
+from backend.streetsignup.utils import recaptcha_valid, send_confirmation_mail, resend_mail
 
 # Host iframe for Vue App
 signup_view = never_cache(TemplateView.as_view(template_name='streetsignup/signup.html'))
@@ -90,11 +90,16 @@ def subscribe(request, street_pk):
 @require_POST
 def receive_email(request):
     if request.method == 'POST':
+        to = request.POST.get('to', '')
+        if to in ['info@prayforabbotsford.com', 'stories@prayforabbotsford.com'] or '<info@' in to:
+            if not resend_mail(request.POST.get('from'), to, request.POST.get('subject'), request.POST.get('text')):
+                return HttpResponse(status=500)
         print('--- Email from SendGrid ---')
         print('From:', request.POST.get('from'))
         print('To:', request.POST.get('to'))
         print('Subject:', request.POST.get('subject'))
         print('Body:', request.POST.get('text'))
+        print('Html:', request.POST.get('html'))
     return HttpResponse(status=200)
 
 
