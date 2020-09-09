@@ -40,5 +40,17 @@
 {% block styles %}
     <style>
         .fixed-top { position: absolute; }
+
+        header.masthead {
+            padding-top: 8.5rem;
+            padding-bottom: 2.5rem;
+            background-position: center 75%;
+        }
+        @media (min-width: 768px) {
+            header.masthead {
+                padding-top: 10rem;
+                padding-bottom: 4rem;
+            }
+        }
     </style>
 {% endblock %}
