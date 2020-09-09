@@ -89,17 +89,22 @@ def subscribe(request, street_pk):
 @csrf_exempt
 @require_POST
 def receive_email(request):
+    # Add basic auth security here
     if request.method == 'POST':
         to = request.POST.get('to', '')
+        from_ = request.POST.get('from')
+        subject = request.POST.get('subject', '')
+        text = request.POST.get('text', '')
+        html = request.POST.get('html', '')
+
         if to in ['info@prayforabbotsford.com', 'stories@prayforabbotsford.com'] or '<info@' in to:
-            if not resend_mail(request.POST.get('from'), to, request.POST.get('subject'), request.POST.get('text')):
+            if not resend_mail(from_, to, subject, text, html):
                 return HttpResponse(status=500)
+
         print('--- Email from SendGrid ---')
-        print('From:', request.POST.get('from'))
-        print('To:', request.POST.get('to'))
-        print('Subject:', request.POST.get('subject'))
-        print('Body:', request.POST.get('text'))
-        print('Html:', request.POST.get('html'))
+        print('From:', from_)
+        print('To:', to)
+        print('Subject:', subject)
     return HttpResponse(status=200)
 
 

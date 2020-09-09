@@ -1,6 +1,9 @@
 import json
 import os
+
+from django.contrib.auth.models import User
 from django.utils.crypto import get_random_string
+
 from sendgrid.helpers.mail import Mail, To
 from sendgrid import SendGridAPIClient
 import requests
@@ -79,14 +82,16 @@ def get_email_token():
     return get_random_string(20)
 
 
-def resend_mail(from_, to, subject, text):
-    resend_to = os.environ.get('RESEND_TO', None)
-    if not resend_to:
-        print('No RESEND_TO environ')
+def resend_mail(from_, to, subject, text, html=''):
+    staff_emails = [i[0] for i in User.objects.filter(is_staff=True).exclude(email='').values_list('email')]
+    if not staff_emails:
+        print('No staff users with an email listed')
         return False
-    noreply = 'noreply@prayforabbotsford.com'
-    staff = [resend_to]
-    message = Mail(from_email=noreply, to_emails=staff, subject=subject, plain_text_content=text)
+    destination = 'stories' if 'stories@' in to else 'info'
+    noreply = f'ANPW {destination} <noreply@prayforabbotsford.com>'
+    message = Mail(from_email=noreply, to_emails=staff_emails, subject=subject, plain_text_content=text)
+    if html:
+        message.add_content(html, "text/html")
     message.reply_to = from_
 
     try:
