@@ -23,6 +23,8 @@ about_view = never_cache(TemplateView.as_view(template_name='streetsignup/other/
 media_view = never_cache(TemplateView.as_view(template_name='streetsignup/other/media.html'))
 stories_view = never_cache(TemplateView.as_view(template_name='streetsignup/other/stories.html'))
 
+sitemap_view = never_cache(TemplateView.as_view(template_name='streetsignup/other/sitemap.xml'))
+
 
 @never_cache
 def index_view(request):
