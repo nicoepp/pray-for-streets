@@ -1,4 +1,5 @@
 {% extends 'streetsignup/subpage.html' %}
+{% load static %}
 
 {% block title %}
     Media
@@ -7,13 +8,18 @@
 {% block content %}
     <section class="page-section" id="team">
         <div class="container">
-<!--            <div class="text-center">-->
-<!--                <h2 class="section-heading text-uppercase">About the Event</h2>-->
-<!--            </div>-->
+            <div class="text-center">
+                <h2 class="section-heading text-uppercase">
+                    Seek My Face
+                </h2>
+                <h3 class="section-subheading text-muted text-uppercase">
+                    premiering September 12
+                </h3>
+            </div>
             <div class="row">
                 <div class="col-lg-8 mx-auto text-center" style="min-height: 250px">
                     <p class="large text-muted">
-                        Here will be a video soon.
+                        <img width="100%"  src="{% static 'assets/img/seek_my_face_promo.jpg' %}" alt="Seek my face video promotion">
                     </p>
                 </div>
             </div>
