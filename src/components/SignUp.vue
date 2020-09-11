@@ -225,7 +225,11 @@ export default {
           console.log(resp.data.success);
         }
       } catch (e) {
-        this.errorMessage = 'Sorry, something went wrong while submitting the form';
+        if (e.response.data?.success === false && e.response.data?.email) {
+          this.errorMessage = `Error: ${e.response.data.email}`;
+          return;
+        }
+        this.errorMessage = 'Sorry, something went wrong while submitting the form 2';
         console.log(e.response.data);
       }
     },
