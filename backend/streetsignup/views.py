@@ -41,7 +41,7 @@ def media_view(request):
     launch_time = datetime.datetime(2020, 9, 12, 19, 0, 0, 0, pytz.timezone('America/Vancouver'))
     now = datetime.datetime.now(pytz.timezone('America/Vancouver'))
     ctx = {
-        'video_launched': now > launch_time,
+        'video_launched': True,
     }
     return render(request, 'streetsignup/other/media.html', ctx)
 
