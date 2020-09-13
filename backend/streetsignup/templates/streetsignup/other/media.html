@@ -14,15 +14,30 @@
                 <h2 class="section-heading text-uppercase">
                     Seek My Face
                 </h2>
+                {% if not video_launched %}
                 <h3 class="section-subheading text-muted text-uppercase">
                     premiering September 12
                 </h3>
+                {% endif %}
             </div>
             <div class="row">
-                <div class="col-lg-8 mx-auto text-center" style="min-height: 250px">
+                <div class="col-lg-12 col-12 mx-auto text-center" style="min-height: 250px">
+                    {% if not video_launched %}
                     <p class="large text-muted">
                         <img width="100%"  src="{% static 'assets/img/seek_my_face_promo.jpg' %}" alt="Seek my face video promotion">
                     </p>
+                    {% else %}
+                    <div style="padding:56.25% 0 0 0;position:relative;">
+                        <iframe
+                            src="https://player.vimeo.com/video/451217385?title=0&byline=0&portrait=0"
+                            style="position:absolute;top:0;left:0;width:100%;height:100%;"
+                            frameborder="0"
+                            allow="autoplay; fullscreen"
+                            allowfullscreen
+                        ></iframe>
+                    </div>
+                    <script src="https://player.vimeo.com/api/player.js"></script>
+                    {% endif %}
                 </div>
             </div>
         </div>

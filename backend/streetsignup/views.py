@@ -1,4 +1,6 @@
 import json
+import datetime
+import pytz
 
 from django.core.exceptions import ValidationError
 from django.db.models import Count
@@ -20,7 +22,6 @@ app_view = never_cache(TemplateView.as_view(template_name='app.html'))
 mapapp_view = never_cache(TemplateView.as_view(template_name='mapapp.html'))
 # Other pages
 about_view = never_cache(TemplateView.as_view(template_name='streetsignup/other/about.html'))
-media_view = never_cache(TemplateView.as_view(template_name='streetsignup/other/media.html'))
 stories_view = never_cache(TemplateView.as_view(template_name='streetsignup/other/stories.html'))
 
 sitemap_view = never_cache(TemplateView.as_view(template_name='streetsignup/other/sitemap.xml'))
@@ -33,6 +34,16 @@ def index_view(request):
         'streets_covered': Subscription.covered_streets_count()
     }
     return render(request, 'streetsignup/index.html', ctx)
+
+
+@never_cache
+def media_view(request):
+    launch_time = datetime.datetime(2020, 9, 12, 19, 0, 0, 0, pytz.timezone('America/Vancouver'))
+    now = datetime.datetime.now(pytz.timezone('America/Vancouver'))
+    ctx = {
+        'video_launched': now > launch_time,
+    }
+    return render(request, 'streetsignup/other/media.html', ctx)
 
 
 def all_streets(request):
