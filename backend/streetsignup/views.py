@@ -11,7 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.views.generic import TemplateView
 
-from backend.streetsignup.models import Street, Subscription
+from backend.streetsignup.models import Street, Subscription, Contact
 from backend.streetsignup.utils import recaptcha_valid, send_confirmation_mail, resend_mail
 
 # Host iframe for Vue App
@@ -76,13 +76,24 @@ def subscribe(request, street_pk):
             subs = Subscription(
                 street=street,
                 name=form.get('name', ''),
-                email=form.get('email', ''),
+                email=form.get('email', ''),  # Remove
                 church=form.get('church', ''),
             )
+            contacts = Contact.objects.filter(email=form.get('email', ''))
+            if not contacts.exists():
+                contact = Contact(name=form.get('name', ''), email=form.get('email', ''))
+                contact.full_clean()  # can throw ValidationError
+                contact.save()
+            else:
+                contact = contacts.first()
+            subs.contact = contact
             subs.full_clean()  # can throw ValidationError
             if not recaptcha_valid(form.get('token', '')):
                 return JsonResponse({'success': False, 'token': 'reCAPTCHA invalid'}, status=400)
-            resp = send_confirmation_mail(subs.name, subs.email, street_name=street.name, token=subs.verification_token)
+            resp = send_confirmation_mail(subs.name,
+                                          contact.email,
+                                          street_name=street.name,
+                                          token=contact.verification_token)
             if resp:
                 subs.save()
                 return JsonResponse({'success': True, 'subscription_id': subs.pk})
@@ -123,21 +134,21 @@ def receive_email(request):
 
 def verify_email(request, token):
     all_subs = Subscription.objects.filter(verification_token=token)
-    success = all_subs.exists()
+    all_contacts = Contact.objects.filter(verification_token=token)
+    success = all_contacts.exists() or all_subs.exists()
     if success:
-        sub = all_subs.first()
-        sub.verified = True
-        sub.save()
+        contact = all_contacts.first() if all_contacts.exists() else all_subs.first().contact
+        contact.verified = True
+        contact.save()
     return render(request, 'streetsignup/email/verify.html', {'success': success})
 
 
 def unsubscribe_email(request, token):
     all_subs = Subscription.objects.filter(verification_token=token)
-    success = all_subs.exists()
-    street_name = ''
+    all_contacts = Contact.objects.filter(verification_token=token)
+    success = all_contacts.exists() or all_subs.exists()
     if success:
-        sub = all_subs.first()
-        sub.unsubscribed = True
-        sub.save()
-        street_name = sub.street.name
-    return render(request, 'streetsignup/email/unsubscribe.html', {'success': success, 'street_name': street_name})
+        contact = all_contacts.first() if all_contacts.exists() else all_subs.first().contact
+        contact.unsubscribed = True
+        contact.save()
+    return render(request, 'streetsignup/email/unsubscribe.html', {'success': success})

@@ -22,15 +22,32 @@ class Segment(models.Model):
         return f'Segment {self.objectid} - {self.street}'
 
 
-class Subscription(models.Model):
-    street = models.ForeignKey(Street, on_delete=models.PROTECT)
+class Contact(models.Model):
     name = models.CharField(max_length=30)
-    email = models.EmailField()
-    church = models.CharField(max_length=40)
+    email = models.EmailField(unique=True, db_index=True)
 
     verification_token = models.SlugField(db_index=True, default=get_email_token)
     verified = models.BooleanField(default=False)
     unsubscribed = models.BooleanField(default=False)
+    sharing_consent = models.BooleanField(default=False)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f'{self.name} <{self.email}>'
+
+
+class Subscription(models.Model):
+    street = models.ForeignKey(Street, on_delete=models.PROTECT)
+    name = models.CharField(max_length=30)
+    email = models.EmailField(null=True)  # Remove
+    contact = models.ForeignKey(Contact, null=True, on_delete=models.PROTECT)
+    church = models.CharField(max_length=40)
+
+    verification_token = models.SlugField(db_index=True, default=get_email_token)
+    verified = models.BooleanField(default=False)      # Remove
+    unsubscribed = models.BooleanField(default=False)  # Remove
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

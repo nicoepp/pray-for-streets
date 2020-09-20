@@ -79,7 +79,7 @@ def send_confirmation_mail(name, email, token, street_name=''):
 
 
 def get_email_token():
-    return get_random_string(20)
+    return get_random_string(25)
 
 
 def resend_mail(from_, to, subject, text, html=''):
