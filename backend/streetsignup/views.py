@@ -1,6 +1,4 @@
 import json
-import datetime
-import pytz
 
 from django.core.exceptions import ValidationError
 from django.db.models import Count
@@ -38,12 +36,7 @@ def index_view(request):
 
 @never_cache
 def media_view(request):
-    launch_time = datetime.datetime(2020, 9, 12, 19, 0, 0, 0, pytz.timezone('America/Vancouver'))
-    now = datetime.datetime.now(pytz.timezone('America/Vancouver'))
-    ctx = {
-        'video_launched': True,
-    }
-    return render(request, 'streetsignup/other/media.html', ctx)
+    return render(request, 'streetsignup/other/media.html')
 
 
 def all_streets(request):
