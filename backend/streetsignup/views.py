@@ -69,7 +69,6 @@ def subscribe(request, street_pk):
             subs = Subscription(
                 street=street,
                 name=form.get('name', ''),
-                email=form.get('email', ''),  # Remove
                 church=form.get('church', ''),
             )
             contacts = Contact.objects.filter(email=form.get('email', ''))

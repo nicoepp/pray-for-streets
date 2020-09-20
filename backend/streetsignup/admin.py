@@ -13,5 +13,6 @@ contact_verified.boolean = True
 @admin.register(Subscription)
 class SubscriptionAdmin(admin.ModelAdmin):
     # exclude_fields and readonly_fields
+    exclude = ['verification_token']
     search_fields = ['street__name', 'name', 'church']
     list_display = ['name', 'church', 'street', 'created_at', contact_verified]
