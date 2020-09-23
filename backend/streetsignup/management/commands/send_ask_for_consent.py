@@ -11,7 +11,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         emails = set()
-        verified_true = Q(subscriptions__contact__verified=True)
+        verified_true = Q(subscriptions__contact__verified=True, subscriptions__contact__unsubscribed=False)
         streets = Street.objects.annotate(subs=models.Count('subscriptions', filter=verified_true)).filter(subs__gt=1)
         for st in streets:
             subs = st.subscriptions.all()
@@ -21,6 +21,10 @@ class Command(BaseCommand):
             contact = Contact.objects.get(email=email)
 
             if contact.ask_consent_email_sent:
+                return
+            if not contact.verified:
+                return
+            if contact.unsubscribed:
                 return
 
             if ask_for_consent_email(contact.name, contact.email, contact.verification_token):
