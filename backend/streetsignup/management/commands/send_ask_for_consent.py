@@ -21,11 +21,11 @@ class Command(BaseCommand):
             contact = Contact.objects.get(email=email)
 
             if contact.ask_consent_email_sent:
-                break
+                continue
             if not contact.verified:
-                break
+                continue
             if contact.unsubscribed:
-                break
+                continue
 
             if ask_for_consent_email(contact.name, contact.email, contact.verification_token):
                 contact.ask_consent_email_sent = True
