@@ -17,6 +17,7 @@ urlpatterns = [
     path('inbound_email', views.receive_email, name='email'),
     path('confirm_email/<token>', views.verify_email, name='verify_email'),
     path('unsubscribe/<token>', views.unsubscribe_email, name='unsubscribe'),
+    path('consent_to_share/<token>', views.consent_sharing_email, name='consent'),
     path('sitemap.xml', views.sitemap_view, name='sitemap'),
     path('', views.index_view, name='index'),
 ]

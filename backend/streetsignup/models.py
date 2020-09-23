@@ -30,6 +30,7 @@ class Contact(models.Model):
     verified = models.BooleanField(default=False)
     unsubscribed = models.BooleanField(default=False)
     sharing_consent = models.BooleanField(default=False)
+    ask_consent_email_sent = models.BooleanField(default=False)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -39,9 +40,9 @@ class Contact(models.Model):
 
 
 class Subscription(models.Model):
-    street = models.ForeignKey(Street, on_delete=models.PROTECT)
+    street = models.ForeignKey(Street, related_name='subscriptions', on_delete=models.PROTECT)  # Look for Count('sub..
     name = models.CharField(max_length=30)
-    contact = models.ForeignKey(Contact, null=True, on_delete=models.PROTECT)
+    contact = models.ForeignKey(Contact, null=True, related_name='subscriptions', on_delete=models.PROTECT)
     church = models.CharField(max_length=40)
 
     verification_token = models.SlugField(db_index=True, default=get_email_token)
@@ -54,9 +55,9 @@ class Subscription(models.Model):
 
     @staticmethod
     def covered_streets_geojson():
-        segments = Segment.objects.annotate(subs=models.Count('street__subscription')).filter(subs__gt=0)
+        segments = Segment.objects.annotate(subs=models.Count('street__subscriptions')).filter(subs__gt=0)
         return segments_to_geojson(segments.values('pk', 'path', 'street__name'))
 
     @staticmethod
     def covered_streets_count():
-        return Street.objects.annotate(subs=models.Count('subscription')).filter(subs__gt=0).count()
+        return Street.objects.annotate(subs=models.Count('subscriptions')).filter(subs__gt=0).count()

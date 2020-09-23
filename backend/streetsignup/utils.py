@@ -82,6 +82,46 @@ def get_email_token():
     return get_random_string(25)
 
 
+def ask_for_consent_email(name, email, token):
+    message = Mail(from_email=FROM_EMAIL, to_emails=[(email, name)])
+    message.dynamic_template_data = {
+        'email_token': token,
+    }
+    message.template_id = 'd-ebe70fe7eb414f329f3e2e1032707bdf'
+
+    try:
+        sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+        response = sg.send(message)
+        code = response.status_code
+        print(f"   Consent email sent to: {name} <{email}> -- code: {code}")
+        return True
+    except Exception as e:
+        print("   Consent email sending error: {0}".format(e))
+        print(f'   Tried sending to: {name} <{email}>')
+        return False
+
+
+def send_street_co_subscriber_list(name, email, subscribers, street_name):
+    message = Mail(from_email=FROM_EMAIL, to_emails=[(email, name)])
+    message.dynamic_template_data = {
+        'name': name,
+        'street_name': street_name,
+        'subscribers': [{'name': s[0], 'email': s[1]} for s in subscribers],  # [(name, email), (name, email)]
+    }
+    message.template_id = 'd-e4f88d03d5e1444cbcfdec1c2263d470'
+
+    try:
+        sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+        response = sg.send(message)
+        code = response.status_code
+        print(f"   Subscribers list sent to: {name} <{email}> -- code: {code}")
+        return True
+    except Exception as e:
+        print("   Subscribers list sending error: {0}".format(e))
+        print(f'   Tried sending to: {name} <{email}>')
+        return False
+
+
 def resend_mail(from_, to, subject, text, html=''):
     staff_emails = [i[0] for i in User.objects.filter(is_staff=True).exclude(email='').values_list('email')]
     if not staff_emails:

@@ -1,0 +1,28 @@
+{% extends 'streetsignup/subpage.html' %}
+
+{% block subtitle %}
+    {% if success %}
+        Consent given
+    {% else %}
+        Oops!
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <section class="page-section" id="team">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center" style="min-height: 250px">
+                    <p class="large text-muted">
+                        {% if success %}
+                            Thank you! You should receive an email shortly if the other person also consented
+                            to share their contact.
+                        {% else %}
+                            Sorry, something went wrong. We could not register your consent to share.
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

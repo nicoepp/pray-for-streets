@@ -10,7 +10,8 @@ from django.views.decorators.http import require_POST
 from django.views.generic import TemplateView
 
 from backend.streetsignup.models import Street, Subscription, Contact
-from backend.streetsignup.utils import recaptcha_valid, send_confirmation_mail, resend_mail
+from backend.streetsignup.utils import recaptcha_valid, send_confirmation_mail, resend_mail, ask_for_consent_email, \
+    send_street_co_subscriber_list
 
 # Host iframe for Vue App
 signup_view = never_cache(TemplateView.as_view(template_name='streetsignup/signup.html'))
@@ -43,7 +44,7 @@ def all_streets(request):
     return JsonResponse({
         'streets': list(Street.objects
                               .order_by('name')
-                              .values('id', 'name', subs=Count('subscription')))
+                              .values('id', 'name', subs=Count('subscriptions')))
     })
 
 
@@ -130,8 +131,23 @@ def verify_email(request, token):
     success = all_contacts.exists() or all_subs.exists()
     if success:
         contact = all_contacts.first() if all_contacts.exists() else all_subs.first().contact
-        contact.verified = True
-        contact.save()
+        if not contact.verified:
+            contact.verified = True
+            contact.save()
+
+            # If has streets with multiple subscribers (which hadn't multiple before)
+            # then ask_for_consent to all subscribers who haven't given their consent yet
+            # including this contact himself.
+            for contact_sub in contact.subscriptions.all():
+                street = contact_sub.street
+                street_subs = street.subscriptions.filter(contact__verified=True, contact__unsubscribed=False)
+                if street_subs.count() > 1:  # or just at equal two?
+                    for sub in street_subs:
+                        ct = sub.contact
+                        if not ct.sharing_consent and not ct.ask_consent_email_sent:
+                            if ask_for_consent_email(ct.name, ct.email, ct.verification_token):
+                                ct.ask_consent_email_sent = True
+                                ct.save()
     return render(request, 'streetsignup/email/verify.html', {'success': success})
 
 
@@ -144,3 +160,24 @@ def unsubscribe_email(request, token):
         contact.unsubscribed = True
         contact.save()
     return render(request, 'streetsignup/email/unsubscribe.html', {'success': success})
+
+
+def consent_sharing_email(request, token):
+    all_contacts = Contact.objects.filter(verification_token=token)
+    success = all_contacts.exists()
+    if success:
+        contact = all_contacts.first()
+        if not contact.sharing_consent:
+            contact.sharing_consent = True
+            contact.save()
+            # If 2 shared consent (1 other) send list of subscribers to both, if 3 shared do it too (2 other)
+            # Omit this one was the first (1 shared consent, no other)
+            for contact_sub in contact.subscriptions.all():
+                street = contact_sub.street
+                street_subs = street.subscriptions.filter(contact__sharing_consent=True)
+                if street_subs.count() > 1:
+                    for sub in street_subs:
+                        ct = sub.contact
+                        emails = street_subs.exclude(contact=ct).values_list('contact__name', 'contact__email')
+                        send_street_co_subscriber_list(ct.name, ct.email, emails, street_name=street.name)
+    return render(request, 'streetsignup/email/consent.html', {'success': success})
