@@ -144,3 +144,23 @@ def resend_mail(from_, to, subject, text, html=''):
         print("Email resending error: {0}".format(e))
         print(f'Tried sending email from {from_} with subject {subject}')
         return False
+
+
+def reminder_email(apikey):
+    try:
+        key = os.environ.get('MAILGUN_API_KEY', apikey)
+        if not key:
+            print('There is no MG API key set')
+            return False
+        return requests.post(
+            "https://api.mailgun.net/v3/m.prayforabbotsford.com/messages",
+            auth=("api", key),
+            data={"from": "Excited User <mailgun@m.prayforabbotsford.com>",
+                  "h:Reply-To": "ANPW <info@prayforabbotsford.com>",
+                  "to": "Nico Epp <nicoeppfriesen@gmail.com>",
+                  "subject": "Hey, another Test",
+                  "text": "Testing some more Mailgun awesomness!"})
+    except requests.RequestException as e:
+        print("Reminder email sending error: {0}".format(e))
+        return False
+
