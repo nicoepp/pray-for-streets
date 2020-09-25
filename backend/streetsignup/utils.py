@@ -146,21 +146,35 @@ def resend_mail(from_, to, subject, text, html=''):
         return False
 
 
-def reminder_email(apikey):
+def reminder_email(name, email, token, apikey=None):
+    from_mailgun_email = FROM_EMAIL.replace('@pray', '@m.pray')
     try:
         key = os.environ.get('MAILGUN_API_KEY', apikey)
         if not key:
             print('There is no MG API key set')
             return False
-        return requests.post(
+        resp = requests.post(
             "https://api.mailgun.net/v3/m.prayforabbotsford.com/messages",
             auth=("api", key),
-            data={"from": "Excited User <mailgun@m.prayforabbotsford.com>",
-                  "h:Reply-To": "ANPW <info@prayforabbotsford.com>",
-                  "to": "Nico Epp <nicoeppfriesen@gmail.com>",
-                  "subject": "Hey, another Test",
-                  "text": "Testing some more Mailgun awesomness!"})
+            data={
+                "from": from_mailgun_email,
+                "h:Reply-To": FROM_EMAIL,
+                "to": f"{name} <{email}>",
+                "subject": "September 27, Abbotsford Neighbourhood Prayer Walk Starts!",
+                "template": "reminder_email",
+                'h:X-Mailgun-Variables': '{"email_token": "' + token + '"}'
+            }
+        )
+        if not resp.status_code == 200:
+            print("Reminder email sending error: {0}".format(resp.status_code))
+            return False
+        print('Reminder email sent: ', resp.content)
+        return True
     except requests.RequestException as e:
         print("Reminder email sending error: {0}".format(e))
+        try:
+            print(e.response.content)
+        except Exception:
+            pass
         return False
 
