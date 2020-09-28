@@ -56,25 +56,41 @@ TEMPLATE_ID = 'd-5f4bb94f40e3414a9784f9699b31e429'
 
 
 def send_confirmation_mail(name, email, token, street_name=''):
-    message = Mail(from_email=FROM_EMAIL, to_emails=[(email, name)])
-    # pass custom values for our HTML placeholders
-    message.dynamic_template_data = {
-        'person_name': name,
-        'street_name': street_name,
-        'email_token': token,
-    }
-    message.template_id = TEMPLATE_ID
-
+    from_mailgun_email = FROM_EMAIL.replace('@pray', '@m.pray')
     try:
-        sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
-        response = sg.send(message)
-        code, body, headers = response.status_code, response.body, response.headers
-        print(f"Confirmation email sent to: {name} <{email}>")
-        print(f"Response code: {code}, body: {body}")
+        key = os.environ.get('MAILGUN_API_KEY', None)
+        if not key:
+            print('There is no MG API key set')
+            return False
+        resp = requests.post(
+            "https://api.mailgun.net/v3/m.prayforabbotsford.com/messages",
+            auth=("api", key),
+            data={
+                "from": from_mailgun_email,
+                "h:Reply-To": FROM_EMAIL,
+                "to": f"{name} <{email}>",
+                "subject": "Thank you for praying with us! Confirm your Email",
+                "template": "sign_up_confirmation",
+                'h:X-Mailgun-Variables': json.dumps({
+                    'person_name': name,
+                    'street_name': street_name,
+                    'email_token': token,
+                })
+            }
+        )
+        if not resp.status_code == 200:
+            print("Confirmation email sending error: {0}".format(resp.status_code))
+            print(f'Tried sending to: {name} <{email}>')
+            return False
+        print(f"Confirmation email sent to: {name} <{email}> => ", resp.content)
         return True
-    except Exception as e:
+    except requests.RequestException as e:
         print("Confirmation email sending error: {0}".format(e))
         print(f'Tried sending to: {name} <{email}>')
+        try:
+            print(e.response.content)
+        except Exception:
+            pass
         return False
 
 
