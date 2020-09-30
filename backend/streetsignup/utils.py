@@ -162,7 +162,7 @@ def resend_mail(from_, to, subject, text, html=''):
         return False
 
 
-def reminder_email(name, email, token, apikey=None):
+def reminder_email(name, email, token, apikey=None, subject=None, template=None):
     from_mailgun_email = FROM_EMAIL.replace('@pray', '@m.pray')
     try:
         key = os.environ.get('MAILGUN_API_KEY', apikey)
@@ -176,8 +176,8 @@ def reminder_email(name, email, token, apikey=None):
                 "from": from_mailgun_email,
                 "h:Reply-To": FROM_EMAIL,
                 "to": f"{name} <{email}>",
-                "subject": "September 27, Abbotsford Neighbourhood Prayer Walk Starts!",
-                "template": "reminder_email",
+                "subject": subject or "September 27, Abbotsford Neighbourhood Prayer Walk Starts!",
+                "template": template or "reminder_email",
                 'h:X-Mailgun-Variables': '{"email_token": "' + token + '"}'
             }
         )
