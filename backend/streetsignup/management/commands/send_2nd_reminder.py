@@ -6,7 +6,7 @@ from backend.streetsignup.models import Street, Contact
 from backend.streetsignup.utils import reminder_email
 
 TEMPLATE = 'reminder_email_2'
-SUBJECT = ' -- 2nd Email -- '  # THIS is a TEST value !!!
+SUBJECT = 'Keep Praying'  # THIS is a TEST value !!!
 
 
 class Command(BaseCommand):
