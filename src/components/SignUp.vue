@@ -6,7 +6,7 @@
           <v-stepper-header>
             <v-stepper-step step="st">Choose Street</v-stepper-step>
             <v-stepper-step step="m">Map</v-stepper-step>
-            <v-stepper-step step="rg">Register</v-stepper-step>
+            <!--<v-stepper-step step="rg">Register</v-stepper-step>-->
           </v-stepper-header>
 
           <v-stepper-items>
@@ -14,8 +14,7 @@
               <v-card>
                 <v-card-text>
                   <v-card-subtitle class="pl-9 pt-0">
-                    Please choose one street per family or group.
-                    There is a maximum of 3 registrants per Street.
+                    The prayer event is over. Sign up is closed.
                   </v-card-subtitle>
                   <v-form v-if="step === 'st'">
                     <v-autocomplete
@@ -56,7 +55,7 @@
                 <v-card-actions>
                   <v-spacer></v-spacer>
                   <v-btn @click="goBack">Back</v-btn>
-                  <v-btn @click="step = 'rg'" color="primary">Next</v-btn>
+                  <!--<v-btn @click="step = 'rg'" color="primary">Next</v-btn>-->
                 </v-card-actions>
               </v-card>
             </v-stepper-content>
