@@ -14,7 +14,7 @@
               <v-card>
                 <v-card-text>
                   <v-card-subtitle class="pl-9 pt-0">
-                    The prayer event is over. Sign up is closed.
+                    Sign up is currently closed. Thanks for the interest.
                   </v-card-subtitle>
                   <v-form v-if="step === 'st'">
                     <v-autocomplete
@@ -55,7 +55,7 @@
                 <v-card-actions>
                   <v-spacer></v-spacer>
                   <v-btn @click="goBack">Back</v-btn>
-                  <!--<v-btn @click="step = 'rg'" color="primary">Next</v-btn>-->
+                  <v-btn @click="step = 'rg'" color="primary" disabled>Next</v-btn>
                 </v-card-actions>
               </v-card>
             </v-stepper-content>
