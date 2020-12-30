@@ -2,27 +2,56 @@
 
 Front- and Backend for Abbotsford Neighbourhood Prayer Walk
 
-## Backend
+## 1. Frontend
+Assuming you use Yarn run the following to install all dependencies.
+```shell
+yarn install
+```
+To build the frontend run this:
+```shell
+yarn build
+```
+
+## 2. Backend
 Assuming you have the latest Python and Pip installed run the following 
 to install all dependencies.
 ```shell
 pip install -r requirements.txt
 ```
-One of these dependencies is Gunicorn (an application server) it should be
-available in your shell after the install. 
+_One of these dependencies is Gunicorn (an application server which is widely used
+in production), it should be available in your shell after the installation._
 
-To run the backend server:
+To run the backend server run:
 ```shell
 gunicorn backend.wsgi
 ```
+Now if you open http://localhost:8000 in the browser you should be able 
+to navigate the hole website and also use the Sign Up Vue.js 
+web application. Enjoy!
 
-## Frontend
-Assuming you use Yarn run the following to install all dependencies.
-```shell
-yarn install
-```
-To run the frontend development server (which is also configured to connect to the backend) run:
-```shell
-yarn serve
-```
 
+## Development
+For doing development on the backend a slightly different setup might be more
+convenient. Instead of gunicorn run `python3 manage.py runserver`. This runs
+the Django development server which reloads automatically if 
+some Python or HTML code has changed in the backend. Also, errors will be
+shown with more helpful information. The downside to using the backend 
+development server is that the Vue.js web application on the Sign Up and
+Map page won't show up.
+
+For doing development on the frontend you can run the backend first and then
+run `yarn serve` and access the Vue.js web application part by opening
+http://localhost:8080. This way your application gets recompiled and reloaded
+in the browser whenever you make changes to your frontend code.
+
+## Deploy to Heroku (Production)
+For production this repo is configured to host the backend and frontend 
+on Heroku. [Multiple builtpacks](https://devcenter.heroku.com/articles/using-multiple-buildpacks-for-an-app) 
+have to be activated for the corresponding Heroku app. The Heroku CLI should 
+list them in the following order:
+```shell
+$ heroku buildpacks
+=== pray-for-streets Buildpack URLs
+1. heroku/nodejs
+2. heroku/python
+```
