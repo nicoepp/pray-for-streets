@@ -1,0 +1,195 @@
+{% extends 'streetsignup/base.html' %}
+
+{% load wagtailcore_tags %}
+
+{% block holetitletag %}
+<title>Abbotsford Neighbourhood Prayer Walk | Pray for Abbotsford | Sept 27 to Oct 3 </title>
+{% endblock holetitletag %}
+
+{% block structureddata %}
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Event",
+        "name": "Abbotsford Neighbourhood Prayer Walk",
+        "startDate": "2020-09-23",
+        "endDate": "2020-10-03",
+        "eventStatus": "https://schema.org/EventScheduled",
+        "location": {
+            "@type": "City",
+            "name": "Abbotsford",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Abbotsford"
+            }
+        },
+        "description": "Join us to see every home, every street in Abbotsford being systematically prayed over.",
+        "organizer": {
+            "@type": "Organization",
+            "name": "Abbotsford Christian Leaders Network",
+            "url": "https://www.abbotsfordchristianleaders.com"
+        }
+    }
+</script>
+{% endblock %}
+
+{% block navigation %}
+    <!-- Masthead-->
+    <header class="masthead homepage">
+        <div class="container">
+<!--            <div class="event-date masthead-subheading overheading">-->
+<!--                Sept 27 - Oct 3 2020-->
+<!--            </div>-->
+            <div class="event-title masthead-heading text-uppercase" style="margin-bottom: 2rem">
+                <div class="first">Abbotsford</div>
+                <div class="second">Neighbourhood</div>
+                <div class="third">Prayer Walk</div>
+            </div>
+
+            <div class="masthead-subheading covered">
+                <!--{{ streets_covered }} out of {{ streets_total }} streets now covered-->
+                <p class="mb-0"> 649 of 1280 were covered Sept 27-Oct 3, 2020 </p>
+                <p class="mb-0" style="color: white"> Thank you Abbotsford! </p>
+                <p class="mb-0" style="color: white"> Stay tuned for future prayer walks. </p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Buttons -->
+    <section class="page-section" id="buttons">
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-lg-2 offset-lg-1   col-md-4   col-6   pb-3">
+                    <a class="btn btn-primary btn-xl" href="{% url 'about' %}">
+                        <i class="fas fa-info-circle   mr-2 fa-2x"></i><br>
+                         About
+                    </a>
+                </div>
+                <div class="col-lg-2   col-md-4   col-6   pb-3">
+                    <a class="btn btn-primary btn-xl" href="{% url 'signup' %}">
+                        <i class="fas fa-location-arrow   mr-2 fa-2x"></i><br>
+                        Sign<span>&nbsp;</span>Up
+                        <!-- nbsp so two words don't make button bigger -->
+                    </a>
+                </div>
+                <div class="col-lg-2   col-md-4   col-6   pb-3">
+                    <a class="btn btn-primary btn-xl" href="{% url 'map' %}">
+                        <i class="fas fa-map-marked   mr-2 fa-2x"></i><br>
+                        Map
+                    </a>
+                </div>
+                <div class="col-lg-2 offset-lg-0   col-md-4 offset-md-2   col-6   pb-3">
+                    <a class="btn btn-primary btn-xl" href="{% url 'media' %}">
+                        <i class="fas fa-video   mr-2 fa-2x"></i><br>
+                        Media
+                    </a>
+                </div>
+                <div class="col-lg-2 offset-lg-0   col-md-4 offset-md-0   col-6 offset-3   pb-3">
+                    <a class="btn btn-primary btn-xl" href="{% url 'stories' %}">
+                        <i class="fas fa-heart   mr-2 fa-2x"></i><br>
+                        Stories
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block content %}
+    <section class="page-section" id="team">
+        <div class="container">
+        {% for block in page.body %}
+            {% if block.block_type == 'title' %}
+            <div class="text-center">
+                <h2 class="section-heading text-uppercase">{{ block.value }}</h2>
+                <!--<h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>-->
+            </div>
+            {% endif %}
+            {% if block.block_type == 'paragraph' %}
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center">
+                    <p class="large text-muted">
+                        {% include_block block %}
+                    </p>
+                </div>
+            </div>
+            {% endif %}
+        {% endfor %}
+        </div>
+    </section>
+{% endblock %}
+
+{% block styles %}
+  <style>
+    #buttons {
+        padding-top: 0;
+        padding-bottom: 10px;
+        margin-top: -20px;
+    }
+
+    #buttons .btn.btn-primary {
+        width: 156px;
+    }
+
+    .masthead.homepage .first {
+        letter-spacing: .1rem;
+        line-height: 8rem;
+        font-size: 190px;
+    }
+    .masthead.homepage .second {
+        letter-spacing: .075rem;
+        line-height: 8rem;
+        font-size: 145px;
+    }
+    .masthead.homepage .third {
+        letter-spacing: .12rem;
+        line-height: 8rem;
+        font-size: 175px
+    }
+    .masthead.homepage .masthead-subheading.overheading {
+        font-size: 70px;
+        font-style: normal;
+        margin-top: -90px;
+        margin-bottom: 90px;
+    }
+
+    .masthead.homepage .masthead-subheading.covered {
+        margin-bottom: 0;
+        font-style: normal;
+        color: #fed136;
+        position: relative;
+        top: 0.9vw;
+    }
+
+    @media (min-width: 768px) {
+        header.masthead {
+            padding-top: 8.5rem;
+            padding-bottom: 5rem;
+        }
+    }
+
+    @media (max-width: 800px) {
+            .masthead.homepage .first {
+            letter-spacing: .1rem;
+            line-height: 4rem;
+            font-size: 95px;
+        }
+        .masthead.homepage .second {
+            letter-spacing: .075rem;
+            line-height: 4rem;
+            font-size: 72px;
+        }
+        .masthead.homepage .third {
+            letter-spacing: .12rem;
+            line-height: 4rem;
+            font-size: 87px
+        }
+        .masthead.homepage .masthead-subheading.overheading {
+            font-size: 45px;
+            font-style: normal;
+            margin-top: -80px;
+            margin-bottom: 80px;
+        }
+    }
+  </style>
+{% endblock %}
