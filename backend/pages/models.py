@@ -10,6 +10,7 @@ class HomePage(Page):
     body = StreamField([
         ('title', blocks.CharBlock(form_classname='title', required=False)),
         ('paragraph', blocks.TextBlock(form_classname='full')),
+        ('rich', blocks.RichTextBlock(form_classname='full')),
     ])
 
     content_panels = Page.content_panels + [

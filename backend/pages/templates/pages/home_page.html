@@ -104,13 +104,18 @@
                 <h2 class="section-heading text-uppercase">{{ block.value }}</h2>
                 <!--<h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>-->
             </div>
-            {% endif %}
-            {% if block.block_type == 'paragraph' %}
+            {% elif block.block_type == 'paragraph' %}
             <div class="row">
-                <div class="col-lg-8 mx-auto text-center">
-                    <p class="large text-muted">
+                <div class="col-lg-8 mx-auto">
+                    <p class="large text-muted text-center">
                         {% include_block block %}
                     </p>
+                </div>
+            </div>
+            {% elif block.block_type == 'rich' %}
+            <div class="row" style="padding-bottom: 30px">
+                <div class="col-lg-8 mx-auto text-muted">
+                    {% include_block block %}
                 </div>
             </div>
             {% endif %}
@@ -129,6 +134,10 @@
 
     #buttons .btn.btn-primary {
         width: 156px;
+    }
+
+    p {
+        min-height: 4px;
     }
 
     .masthead.homepage .first {

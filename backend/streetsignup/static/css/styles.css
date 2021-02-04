@@ -10519,6 +10519,10 @@ header.masthead .masthead-subheading {
   font-family: 'FrederickSans Regular';
 }
 
+h4 {
+  font-size: 16px;
+}
+
 .footer {
   text-align: center;
   font-size: 0.9rem;
