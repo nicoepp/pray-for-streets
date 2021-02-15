@@ -16,3 +16,20 @@ class HomePage(Page):
     content_panels = Page.content_panels + [
         StreamFieldPanel('body'),
     ]
+
+    parent_page_types = [Page]
+
+
+class SubPage(Page):
+    body = StreamField([
+        ('title', blocks.CharBlock(form_classname='title')),
+        ('paragraph', blocks.TextBlock(form_classname='full')),
+        ('rich', blocks.RichTextBlock(form_classname='full')),
+    ])
+
+    content_panels = Page.content_panels + [
+        StreamFieldPanel('body'),
+    ]
+
+    parent_page_types = ['pages.HomePage']
+    subpage_types = []
