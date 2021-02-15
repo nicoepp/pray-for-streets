@@ -1,5 +1,6 @@
 {% extends 'streetsignup/base.html' %}
 
+{% load wagtailimages_tags %}
 {% load wagtailcore_tags %}
 
 {% block navigation %}
@@ -60,6 +61,14 @@
                 <div class="col-lg-8 mx-auto text-muted">
                     {% include_block block %}
                 </div>
+            </div>
+            {% elif block.block_type == 'images' %}
+            <div class="row" style="padding-bottom: 50px">
+                {% for img in block.value %}
+                <div class="col-sm-6" style="padding: 0 15px 30px 15px">
+                    {% image img.value width-550 class="img-fluid" %}
+                </div>
+                {% endfor %}
             </div>
             {% endif %}
         {% endfor %}
