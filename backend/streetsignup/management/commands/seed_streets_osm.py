@@ -9,13 +9,13 @@ class Command(BaseCommand):
     help = 'Populates the Street and Segment models from the "City of Abbotsford\'s Open Data" Roads dataset'
 
     def add_arguments(self, parser):
-        parser.add_argument('filename', nargs='+', type=str)
+        parser.add_argument('place', nargs='+', type=str)
 
     def handle(self, *args, **options):
-        if not options['filename']:
+        if not options['place']:
             return
-        place = "City of Langley, British Columbia"
-        filename = options['filename'][0]
+        # place = "City of Langley, British Columbia"
+        place = options['place'][0]
         graph = ox.graph_from_place(place, network_type='drive')
         nodes, streets = ox.graph_to_gdfs(graph)
         street_names = streets.name.tolist()
