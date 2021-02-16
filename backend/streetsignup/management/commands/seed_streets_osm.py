@@ -6,7 +6,7 @@ from backend.streetsignup.models import Street, Segment
 
 
 class Command(BaseCommand):
-    help = 'Populates the Street and Segment models from the "City of Abbotsford\'s Open Data" Roads dataset'
+    help = 'Populates the Street and Segment models fetching data from OpenStreetMaps'
 
     def add_arguments(self, parser):
         parser.add_argument('place', nargs='+', type=str)
