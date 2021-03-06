@@ -4,6 +4,7 @@ from wagtail.core.models import Page
 from wagtail.core.fields import StreamField
 from wagtail.core import blocks
 from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel
+from wagtail.embeds.blocks import EmbedBlock
 from wagtail.images.blocks import ImageChooserBlock
 
 RICHTEXT_FEATURES = ['h2', 'h3', 'h4', 'ul', 'ol', 'bold', 'italic', 'link', 'hr']
@@ -34,6 +35,8 @@ class SubPage(Page):
             ],
             icon='image'
         )),
+        ('video', EmbedBlock(help_text='Paste in link to the video to be embedded at this spot. '
+                                       'For example: https://vimeo.com/517009861')),
     ])
 
     content_panels = Page.content_panels + [
