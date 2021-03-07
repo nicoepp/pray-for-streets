@@ -15,7 +15,7 @@ class Street(models.Model):
 
 class Segment(models.Model):
     street = models.ForeignKey(Street, related_name='segments', on_delete=models.CASCADE)
-    objectid = models.IntegerField(unique=True, db_index=True)
+    objectid = models.IntegerField(null=True)
     path = models.JSONField()
 
     def __str__(self):
