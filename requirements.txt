@@ -1,8 +1,9 @@
-Django~=3.1.1
-wagtail~=2.11.3
+Django~=3.1.7
+wagtail~=2.11.6
 whitenoise~=5.2.0
 gunicorn~=20.0.4
 django-heroku~=0.3.1
 psycopg2~=2.8.5
 requests~=2.25.0
 sendgrid~=6.4.6
+osmnx~=1.0.1
