@@ -3,6 +3,14 @@
 {% load wagtailimages_tags %}
 {% load wagtailcore_tags %}
 
+{% block titletag %}
+    {% if page.seo_title %}
+        {{ page.seo_title }}
+    {% else %}
+        {{ page.title }}
+    {% endif %}
+{% endblock %}
+
 {% block navigation %}
     <!-- Navigation-->
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
@@ -31,10 +39,13 @@
     <header class="masthead">
         <div class="container">
             <div class="masthead-heading text-uppercase">
-                {{ page.title }}
+                {% block title %}
+                    {{ page.title }}
+                {% endblock %}
             </div>
             <div class="masthead-subheading">
-                {# {% block subtitle %}{% endblock %} #}
+                {% block subtitle %}
+                {% endblock %}
             </div>
         </div>
     </header>

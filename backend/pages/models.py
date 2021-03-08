@@ -29,12 +29,7 @@ class SubPage(Page):
         ('title', blocks.CharBlock(form_classname='title', icon='title')),
         ('paragraph', blocks.TextBlock(form_classname='full')),
         ('rich', blocks.RichTextBlock(form_classname='full', features=RICHTEXT_FEATURES)),
-        ('images', blocks.StreamBlock(
-            [
-                ('image', ImageChooserBlock()),
-            ],
-            icon='image'
-        )),
+        ('images', blocks.StreamBlock([('image', ImageChooserBlock())], icon='image')),
         ('video', EmbedBlock(help_text='Paste in link to the video to be embedded at this spot. '
                                        'For example: https://vimeo.com/517009861')),
     ])
@@ -45,3 +40,15 @@ class SubPage(Page):
 
     parent_page_types = ['pages.HomePage']
     subpage_types = []
+
+
+class SignUpPage(Page):
+    parent_page_types = ['pages.HomePage']
+    subpage_types = []
+    max_count_per_parent = 1
+
+
+class MapPage(Page):
+    parent_page_types = ['pages.HomePage']
+    subpage_types = []
+    max_count_per_parent = 1
