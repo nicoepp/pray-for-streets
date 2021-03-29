@@ -2,6 +2,7 @@
 
 {% load wagtailimages_tags %}
 {% load wagtailcore_tags %}
+{% load menu_tags %}
 
 {% block titletag %}
     {% if page.seo_title %}
@@ -12,6 +13,9 @@
 {% endblock %}
 
 {% block navigation %}
+    {% with page.get_site.root_page as site_root %}
+    {% get_menu site_root as menu_entries %}
+
     <!-- Navigation-->
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
         <div class="container">
@@ -25,16 +29,15 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav text-uppercase ml-auto">
-                    <li class="nav-item"><a class="nav-link" href="{% url 'index' %}">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'signup' %}">Sign Up</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'map' %}">Map</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'media' %}">Media</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'stories' %}">Stories</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% pageurl site_root %}"> {{ site_root.title }} </a></li>
+                {% for entry in menu_entries %}
+                    <li class="nav-item"><a class="nav-link" href="{% pageurl entry %}"> {{ entry.title }}  </a></li>
+                {% endfor %}
                 </ul>
             </div>
         </div>
     </nav>
+    {% endwith %}
     <!-- Masthead-->
     <header class="masthead">
         <div class="container">

@@ -85,6 +85,9 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'libraries': {
+                'menu_tags': 'backend.pages.template_tags.menu_tags'
+            }
         },
     },
 ]
