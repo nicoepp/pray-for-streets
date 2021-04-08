@@ -1,6 +1,7 @@
 {% extends 'streetsignup/base.html' %}
 
 {% load wagtailcore_tags %}
+{% load menu_tags %}
 
 {% block holetitletag %}
 <title>Abbotsford Neighbourhood Prayer Walk | Pray for Abbotsford | Sept 27 to Oct 3 </title>
@@ -58,38 +59,17 @@
     <!-- Buttons -->
     <section class="page-section" id="buttons">
         <div class="container">
-            <div class="row text-center">
-                <div class="col-lg-2 offset-lg-1   col-md-4   col-6   pb-3">
-                    <a class="btn btn-primary btn-xl" href="{% url 'about' %}">
-                        <i class="fas fa-info-circle   mr-2 fa-2x"></i><br>
-                         About
+            <div class="row btn-menu">
+                {% get_menu page as menu_entries %}
+
+                {% for entry in menu_entries %}
+                <div class="m-btn">
+                    <a class="btn btn-primary btn-xl" href="{{ entry.url }}">
+                        <i class="fas {{ entry.icon }}   mr-2 fa-2x"></i><br>
+                        {{ entry.title | force_escape | split:" " | join:"<span>&nbsp;</span>" | safe }}
                     </a>
                 </div>
-                <div class="col-lg-2   col-md-4   col-6   pb-3">
-                    <a class="btn btn-primary btn-xl" href="{% url 'signup' %}">
-                        <i class="fas fa-location-arrow   mr-2 fa-2x"></i><br>
-                        Sign<span>&nbsp;</span>Up
-                        <!-- nbsp so two words don't make button bigger -->
-                    </a>
-                </div>
-                <div class="col-lg-2   col-md-4   col-6   pb-3">
-                    <a class="btn btn-primary btn-xl" href="{% url 'map' %}">
-                        <i class="fas fa-map-marked   mr-2 fa-2x"></i><br>
-                        Map
-                    </a>
-                </div>
-                <div class="col-lg-2 offset-lg-0   col-md-4 offset-md-2   col-6   pb-3">
-                    <a class="btn btn-primary btn-xl" href="{% url 'media' %}">
-                        <i class="fas fa-video   mr-2 fa-2x"></i><br>
-                        Media
-                    </a>
-                </div>
-                <div class="col-lg-2 offset-lg-0   col-md-4 offset-md-0   col-6 offset-3   pb-3">
-                    <a class="btn btn-primary btn-xl" href="{% url 'stories' %}">
-                        <i class="fas fa-heart   mr-2 fa-2x"></i><br>
-                        Stories
-                    </a>
-                </div>
+                {% endfor %}
             </div>
         </div>
     </section>

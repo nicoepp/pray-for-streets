@@ -10539,3 +10539,14 @@ h4 {
 .copyright {
   background-color: #1a252f;
 }
+
+.row.btn-menu {
+  justify-content: center;
+}
+
+.row .m-btn {
+  padding: 0 0.75rem 1rem 0.75rem;
+  width: 190px;
+}
+
+

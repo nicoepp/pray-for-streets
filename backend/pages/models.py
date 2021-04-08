@@ -26,7 +26,14 @@ class HomePage(Page):
     parent_page_types = [Page]
 
 
-class SubPage(Page):
+class MenuPage(Page):
+    icon = models.CharField('Menu Icon', default='fa-info-circle', max_length=30)
+
+    class Meta:
+        abstract = True
+
+
+class SubPage(MenuPage):
     body = StreamField([
         ('title', blocks.CharBlock(form_classname='title', icon='title')),
         ('paragraph', blocks.TextBlock(form_classname='full')),
@@ -37,6 +44,7 @@ class SubPage(Page):
     ])
 
     content_panels = Page.content_panels + [
+        FieldPanel('icon'),
         StreamFieldPanel('body'),
     ]
 
@@ -44,13 +52,21 @@ class SubPage(Page):
     subpage_types = []
 
 
-class SignUpPage(Page):
+class SignUpPage(MenuPage):
+    content_panels = Page.content_panels + [
+        FieldPanel('icon'),
+    ]
+
     parent_page_types = ['pages.HomePage']
     subpage_types = []
     max_count_per_parent = 1
 
 
-class MapPage(Page):
+class MapPage(MenuPage):
+    content_panels = Page.content_panels + [
+        FieldPanel('icon'),
+    ]
+
     parent_page_types = ['pages.HomePage']
     subpage_types = []
     max_count_per_parent = 1
