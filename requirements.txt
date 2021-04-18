@@ -7,3 +7,5 @@ psycopg2~=2.8.5
 requests~=2.25.0
 sendgrid~=6.4.6
 osmnx~=1.0.1
+django-storages~=1.11.1
+google-cloud-storage~=1.37.1
