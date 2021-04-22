@@ -1,5 +1,6 @@
+import os
 import django_heroku
-from .gcloud_credentials import google_credentials_from_env
+from .gcloud_credentials import get_google_credentials
 
 from .dev import *
 
@@ -13,5 +14,5 @@ DEBUG = False
 STATIC_ROOT = BASE_DIR / 'dist' / 'static'
 
 DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
-GS_BUCKET_NAME = 'prayer-walk-heroku'
-GS_CREDENTIALS = google_credentials_from_env('GOOGLE_CREDENTIALS')
+GS_BUCKET_NAME = os.environ.get('GOOGLE_STORAGE_BUCKET')
+GS_CREDENTIALS = get_google_credentials(os.environ.get('GOOGLE_CREDENTIALS'))

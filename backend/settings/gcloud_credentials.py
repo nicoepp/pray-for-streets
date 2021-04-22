@@ -1,14 +1,12 @@
 import json
-import os
 from json import JSONDecodeError
 
 from google.oauth2 import service_account
 from google.auth import crypt
 
 
-def google_credentials_from_env(env_key):
+def get_google_credentials(credentials_json):
     try:
-        credentials_json = os.environ.get(env_key)
         info = json.loads(credentials_json or '')
     except (TypeError, JSONDecodeError) as e:
         raise ValueError('Service account info was not in the expected format, should be valid json')
