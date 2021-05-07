@@ -22,12 +22,17 @@ from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.core import urls as wagtail_urls
 from wagtail.documents import urls as wagtaildocs_urls
 
-from .streetsignup import urls as signup_urls
+from .streetsignup.urls import api_urlpatterns, email_urlpatterns, embed_urlpatterns
+from .streetsignup.views import sitemap_view
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('cms/', include(wagtailadmin_urls)),
     path('documents/', include(wagtaildocs_urls)),
-    path('pages/', include(wagtail_urls)),
-    path('', include(signup_urls)),
+    path('api/', include(api_urlpatterns)),
+    path('embed/', include(embed_urlpatterns)),
+    path('email/', include(email_urlpatterns)),
+    path('sitemap.xml', sitemap_view, name='sitemap'),
+    path('', include(wagtail_urls)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

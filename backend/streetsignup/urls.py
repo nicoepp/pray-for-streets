@@ -2,22 +2,21 @@ from django.urls import path
 
 from . import views
 
-urlpatterns = [
-    path('api/streets/<int:street_pk>.geo.json', views.street_geojson, name='street_geojson'),
-    path('api/streets/covered_streets.geo.json', views.covered_streets, name='covered_streets'),
-    path('api/streets/<int:street_pk>/subscribe', views.subscribe, name='subscribe'),
-    path('api/streets', views.all_streets, name='all_streets'),
+api_urlpatterns = [
+    path('streets/<int:street_pk>.geo.json', views.street_geojson, name='street_geojson'),
+    path('streets/covered_streets.geo.json', views.covered_streets, name='covered_streets'),
+    path('streets/<int:street_pk>/subscribe', views.subscribe, name='subscribe'),
+    path('streets', views.all_streets, name='all_streets'),
+]
+
+embed_urlpatterns = [
     path('app', views.app_view, name='app'),              # Vue
     path('mapapp', views.mapapp_view, name='mapapp'),     # "
-    path('signup', views.signup_view, name='signup'),     # IFrame
-    path('map', views.map_view, name='map'),              # "
-    path('about', views.about_view, name='about'),        # Other
-    path('media', views.media_view, name='media'),        # "
-    path('stories', views.stories_view, name='stories'),  # "
-    path('inbound_email', views.receive_email, name='email'),
-    path('confirm_email/<token>', views.verify_email, name='verify_email'),
+]
+
+email_urlpatterns = [
+    path('inbound', views.receive_email, name='email'),
+    path('confirm/<token>', views.verify_email, name='verify_email'),
     path('unsubscribe/<token>', views.unsubscribe_email, name='unsubscribe'),
     path('consent_to_share/<token>', views.consent_sharing_email, name='consent'),
-    path('sitemap.xml', views.sitemap_view, name='sitemap'),
-    path('', views.index_view, name='index'),
 ]
