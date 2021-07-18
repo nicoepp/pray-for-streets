@@ -28,12 +28,15 @@ class Command(BaseCommand):
                     st.add(str)
                 continue
             st.add(street)
-        
-        osmid = 0		
+
+        osmid = 0
         for street in st:
             if not street or street == 'nan':
                 continue
-            s = Street.objects.create(name=street)
+            if Street.object.filter(name=street).exists():
+                s = Street.objects.get(name=street)
+            else:
+                s = Street.objects.create(name=street)
 
             df2 = streets[streets.name == street]
             d = json.loads(df2.to_json())
