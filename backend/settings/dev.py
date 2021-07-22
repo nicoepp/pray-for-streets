@@ -140,4 +140,4 @@ STATIC_ROOT = BASE_DIR / 'dist' / 'static'
 MEDIA_ROOT = BASE_DIR / 'dist' / 'media'  # On Heroku use S3
 MEDIA_URL = '/media/'                     # Or gcloud.GoogleCloudStorage
 
-WAGTAIL_SITE_NAME = 'Pray for Streets -'
+WAGTAIL_SITE_NAME = 'Prayer Walk'

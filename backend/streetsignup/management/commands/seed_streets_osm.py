@@ -1,5 +1,4 @@
-from django.core.management.base import BaseCommand, CommandError
-import geopandas as gpd
+from django.core.management.base import BaseCommand
 import json
 import osmnx as ox
 from backend.streetsignup.models import Street, Segment
@@ -29,11 +28,10 @@ class Command(BaseCommand):
                 continue
             st.add(street)
 
-        osmid = 0
         for street in st:
             if not street or street == 'nan':
                 continue
-            if Street.object.filter(name=street).exists():
+            if Street.objects.filter(name=street).exists():
                 s = Street.objects.get(name=street)
             else:
                 s = Street.objects.create(name=street)
@@ -43,4 +41,3 @@ class Command(BaseCommand):
             if d.get('features'):
                 for segment in d.get('features'):
                     Segment.objects.create(street=s, path=segment.get('geometry').get('coordinates'))
-                    osmid=+1

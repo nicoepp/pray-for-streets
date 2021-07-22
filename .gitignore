@@ -30,3 +30,4 @@ pnpm-debug.log*
 # Database
 /db.sqlite3
 /.env
+/cache/
