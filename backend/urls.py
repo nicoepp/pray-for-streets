@@ -36,3 +36,6 @@ urlpatterns = [
     path('', include(wagtail_urls)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
+if hasattr(settings, 'SERVE_YARN_FILES') and settings.SERVE_YARN_FILES:
+    urlpatterns = urlpatterns + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
