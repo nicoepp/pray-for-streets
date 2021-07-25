@@ -1,5 +1,6 @@
-from django.contrib import admin
-from .models import Subscription
+from wagtail.contrib.modeladmin.options import ModelAdmin, modeladmin_register
+
+from backend.streetsignup.models import Subscription
 
 
 def contact_verified(obj):
@@ -10,9 +11,9 @@ contact_verified.short_description = 'Verified'
 contact_verified.boolean = True
 
 
-@admin.register(Subscription)
-class SubscriptionAdmin(admin.ModelAdmin):
-    # exclude_fields and readonly_fields
-    exclude = ['verification_token']
+@modeladmin_register
+class SubscriptionAdmin(ModelAdmin):
+    model = Subscription
+    menu_icon = 'tasks'
     search_fields = ['street__name', 'name', 'church']
     list_display = ['name', 'church', 'street', 'created_at', contact_verified]

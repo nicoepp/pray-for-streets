@@ -1,4 +1,6 @@
 from django.db import models
+from wagtail.admin.edit_handlers import FieldPanel
+
 from .utils import segments_to_geojson, get_email_token
 
 
@@ -49,6 +51,13 @@ class Subscription(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    panels = [
+        FieldPanel('street'),
+        FieldPanel('name'),
+        FieldPanel('contact'),
+        FieldPanel('church'),
+    ]
 
     def __str__(self):
         return f'{self.name}, {self.church}: {self.street.name}'

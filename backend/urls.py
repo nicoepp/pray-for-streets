@@ -13,7 +13,6 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
 from django.urls import include, path
 from django.conf import settings
 from django.conf.urls.static import static
@@ -26,7 +25,6 @@ from .streetsignup.urls import api_urlpatterns, email_urlpatterns, embed_urlpatt
 from .streetsignup.views import sitemap_view
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
     path('cms/', include(wagtailadmin_urls)),
     path('documents/', include(wagtaildocs_urls)),
     path('api/', include(api_urlpatterns)),
