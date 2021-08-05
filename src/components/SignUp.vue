@@ -243,7 +243,8 @@ export default {
   },
   async created() {
     try {
-      const resp = await axios.get('/api/streets');
+      const url = window.location.hostname;
+      const resp = await axios.get(`/api/streets/${url}`);
       if (resp.data?.streets) {
         this.streets = resp.data.streets;
       }
