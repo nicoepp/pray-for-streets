@@ -6,7 +6,7 @@ api_urlpatterns = [
     path('streets/<int:street_pk>.geo.json', views.street_geojson, name='street_geojson'),
     path('streets/covered_streets.geo.json', views.covered_streets, name='covered_streets'),
     path('streets/<int:street_pk>/subscribe', views.subscribe, name='subscribe'),
-    path('streets', views.all_streets, name='all_streets'),
+    path('streets/<site_name>', views.all_streets, name='all_streets'),
 ]
 
 embed_urlpatterns = [

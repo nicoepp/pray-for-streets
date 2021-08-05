@@ -9,9 +9,11 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.views.generic import TemplateView
 
-from backend.streetsignup.models import Street, Subscription, Contact
+from backend.streetsignup.models import Street, Subscription, Contact, City
 from backend.streetsignup.utils import recaptcha_valid, send_confirmation_mail, resend_mail, ask_for_consent_email, \
     send_street_co_subscriber_list
+from backend.pages.models import HomePage
+from wagtail.core.models import Site
 
 # Host iframe for Vue App
 signup_view = never_cache(TemplateView.as_view(template_name='streetsignup/signup.html'))
@@ -40,9 +42,13 @@ def media_view(request):
     return render(request, 'streetsignup/other/media.html')
 
 
-def all_streets(request):
+def all_streets(request, site_name):
+    print('We are in: ' + site_name)
+    root_page_id = Site.objects.filter(hostname=site_name).values('root_page_id')[0]['root_page_id']
+    h_city_id = HomePage.objects.filter(id=root_page_id).values('city_id')[0]['city_id']
+    c = City.objects.filter(id=h_city_id)
     return JsonResponse({
-        'streets': list(Street.objects
+        'streets': list(Street.objects.filter(city_site=c[0])
                               .order_by('name')
                               .values('id', 'name', subs=Count('subscriptions')))
     })
