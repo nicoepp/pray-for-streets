@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='homepage',
             name='city',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.PROTECT, to='streetsignup.city'),
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.PROTECT, to='streetsignup.city'),
             preserve_default=False,
         ),
     ]
