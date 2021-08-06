@@ -3,14 +3,20 @@ from wagtail.admin.edit_handlers import FieldPanel
 
 from .utils import segments_to_geojson, get_email_token
 
+
 class City(models.Model):
     name = models.CharField(max_length=80)
     province = models.CharField(max_length=80)
     site = models.CharField(max_length=80)
 
+    def __str__(self):
+        return f'{self.name}, {self.province}'
+
+
 class Street(models.Model):
     name = models.CharField(max_length=80)
     city_site = models.ForeignKey(City, on_delete=models.CASCADE)
+
     def get_geojson(self):
         """ Returns a dict in GeoJSON format """
         return segments_to_geojson(self.segments.values('pk', 'path'), self.name)

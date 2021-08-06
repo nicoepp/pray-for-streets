@@ -8,6 +8,8 @@ from wagtail.embeds.blocks import EmbedBlock
 from wagtail.images.blocks import ImageChooserBlock
 
 from backend.streetsignup.models import City
+
+
 Page.show_in_menus_default = True
 
 RICHTEXT_FEATURES = ['h2', 'h3', 'h4', 'ul', 'ol', 'bold', 'italic', 'link', 'hr']
@@ -20,6 +22,7 @@ class HomePage(Page):
         ('rich', blocks.RichTextBlock(form_classname='full', features=RICHTEXT_FEATURES)),
     ])
     city = models.ForeignKey(City, on_delete=models.PROTECT)
+
     content_panels = Page.content_panels + [
         StreamFieldPanel('body'),
     ]
