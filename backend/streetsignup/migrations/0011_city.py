@@ -2,6 +2,14 @@
 
 from django.db import migrations, models
 
+# def move_flags(apps, schema_editor):
+#     # We can't import the Subscription model directly as it may be a newer
+#     # version than this migration expects. We use the historical version.
+#     City = apps.get_model('streetsignup', 'City')
+#     Street = apps.get_model('streetsignup', 'Street')
+#
+
+
 
 class Migration(migrations.Migration):
 
@@ -19,4 +27,5 @@ class Migration(migrations.Migration):
                 ('site', models.CharField(max_length=80)),
             ],
         ),
+        # migrations.RunPython(move_flags, move_flags_back),
     ]
