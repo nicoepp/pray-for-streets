@@ -44,11 +44,13 @@ def media_view(request):
 
 def all_streets(request, site_name):
     print('We are in: ' + site_name)
-    root_page_id = Site.objects.filter(hostname=site_name).values('root_page_id')[0]['root_page_id']
-    h_city_id = HomePage.objects.filter(id=root_page_id).values('city_id')[0]['city_id']
-    c = City.objects.filter(id=h_city_id)
+
+    root_page = Site.objects.filter(hostname=site_name).first().root_page
+    city = HomePage.objects.filter(pk=root_page.pk).first().city
+
     return JsonResponse({
-        'streets': list(Street.objects.filter(city_site=c[0])
+        'streets': list(Street.objects
+                              .filter(city_site=city)
                               .order_by('name')
                               .values('id', 'name', subs=Count('subscriptions')))
     })
