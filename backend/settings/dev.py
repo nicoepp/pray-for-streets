@@ -135,10 +135,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
-if DEBUG:
-    STATICFILES_DIRS = [ BASE_DIR / 'dist' / 'static' ]
-else:
-    STATIC_ROOT = BASE_DIR / 'dist' / 'static'
+STATIC_ROOT = BASE_DIR / 'dist' / 'static'
 
 MEDIA_ROOT = BASE_DIR / 'dist' / 'media'  # On Heroku use S3
 MEDIA_URL = '/media/'                     # Or gcloud.GoogleCloudStorage
