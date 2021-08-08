@@ -18,7 +18,23 @@ to install all dependencies.
 ```shell
 pip install -r requirements.txt
 ```
-_One of these dependencies is Gunicorn (an application server which is widely used
+
+Next run the migrate command to create your local database
+```shell
+python3 manage.py migrate
+```
+
+To be able to login to the CMS hosted at `/cms` and edit content on the site you need to create the first user
+```shell
+python3 manage.py createsuperuser
+```
+
+To have some street data preseeded from OSM into the database there is a Django command for that
+```shell
+python3 manage.py seed_streets_osm
+```
+
+_One of the dependencies installed with `pip` is Gunicorn (an application server which is widely used
 in production), it should be available in your shell after the installation._
 
 To run the backend server run:
