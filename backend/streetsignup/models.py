@@ -1,3 +1,4 @@
+from django.contrib.auth.models import Group
 from django.db import models
 from wagtail.admin.edit_handlers import FieldPanel
 
@@ -7,10 +8,13 @@ from .utils import segments_to_geojson, get_email_token
 class City(models.Model):
     name = models.CharField(max_length=80)
     province = models.CharField(max_length=80)
-    site = models.CharField(max_length=80)
+    group = models.OneToOneField(Group, null=True, blank=True, on_delete=models.PROTECT)
 
     def __str__(self):
         return f'{self.name}, {self.province}'
+
+    class Meta:
+        verbose_name_plural = 'cities'
 
 
 class Street(models.Model):

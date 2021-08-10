@@ -29,8 +29,8 @@ class Command(BaseCommand):
             if not street or street == 'nan':
                 continue
             if isinstance(street, list):
-                for str in street:
-                    st.add(str)
+                for strt in street:
+                    st.add(strt)
                 continue
             st.add(street)
         if City.objects.filter(name=city_db).exists():

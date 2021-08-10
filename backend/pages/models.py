@@ -21,7 +21,7 @@ class HomePage(Page):
         ('paragraph', blocks.TextBlock(form_classname='full')),
         ('rich', blocks.RichTextBlock(form_classname='full', features=RICHTEXT_FEATURES)),
     ])
-    city = models.ForeignKey(City, on_delete=models.PROTECT)
+    city = models.ForeignKey(City, related_name='homepage', on_delete=models.PROTECT)
 
     content_panels = Page.content_panels + [
         StreamFieldPanel('body'),
