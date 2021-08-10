@@ -10,7 +10,6 @@ def contact_verified(obj):
 
 
 contact_verified.short_description = 'Verified'
-contact_verified.boolean = True
 
 
 @modeladmin_register
