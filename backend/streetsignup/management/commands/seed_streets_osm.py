@@ -36,7 +36,7 @@ class Command(BaseCommand):
         if City.objects.filter(name=city_db).exists():
             c = City.objects.get(name=city_db)
         else:
-            c = City.objects.create(name=city_db, province=province_name, site='not necessary')
+            c = City.objects.create(name=city_db, province=province_name)
         for street in st:
             if not street or street == 'nan':
                 continue
