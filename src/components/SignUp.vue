@@ -248,9 +248,6 @@ export default {
       if (resp.data?.streets) {
         this.streets = resp.data.streets;
       }
-
-      const resp2 = await axios.get('/api/streets/covered_streets.geo.json');
-      this.covered_streets = resp2.data;
     } catch (e) { console.log(); }
   },
 };

@@ -17,7 +17,8 @@ export default {
   }),
   async created() {
     try {
-      const resp = await axios.get('/api/streets/covered_streets.geo.json');
+      const url = window.location.hostname;
+      const resp = await axios.get(`/api/streets/covered_streets.geo.json?site=${url}`);
       this.covered_streets = resp.data;
     } catch (e) { console.log(); }
   },

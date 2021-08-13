@@ -63,7 +63,8 @@ def street_geojson(request, street_pk):
 
 
 def covered_streets(request):
-    return JsonResponse(Subscription.covered_streets_geojson())
+    hostname = request.GET.get('site', None)
+    return JsonResponse(Subscription.covered_streets_geojson(hostname))
 
 
 @csrf_exempt

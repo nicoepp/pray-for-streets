@@ -1,6 +1,7 @@
 from django.contrib.auth.models import Group
 from django.db import models
 from wagtail.admin.edit_handlers import FieldPanel
+from wagtail.core.models import Site
 
 from .utils import segments_to_geojson, get_email_token
 
@@ -77,8 +78,14 @@ class Subscription(models.Model):
         return f'{self.name}, {self.church}: {self.street.name}'
 
     @staticmethod
-    def covered_streets_geojson():
+    def covered_streets_geojson(hostname=None):
         segments = Segment.objects.annotate(subs=models.Count('street__subscriptions')).filter(subs__gt=0)
+        if hostname:
+            sites = Site.objects.filter(hostname=hostname)
+            if sites.exists():
+                homepage = sites.first().root_page
+                segments = segments.filter(street__city_site__homepage=homepage)
+
         return segments_to_geojson(segments.values('pk', 'path', 'street__name'))
 
     @staticmethod
