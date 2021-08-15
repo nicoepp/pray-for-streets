@@ -26,6 +26,14 @@ class Street(models.Model):
         """ Returns a dict in GeoJSON format """
         return segments_to_geojson(self.segments.values('pk', 'path'), self.name)
 
+    @staticmethod
+    def all_streets_geojson(hostname: str = None):
+        if not hostname:
+            return segments_to_geojson([])
+        homepage = Site.objects.get(hostname=hostname).root_page
+        segments = Segment.objects.filter(street__city_site__homepage=homepage)
+        return segments_to_geojson(segments.values('pk', 'path', 'street__name'))
+
     def __str__(self):
         return self.name
 

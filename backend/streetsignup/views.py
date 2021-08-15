@@ -67,6 +67,11 @@ def covered_streets(request):
     return JsonResponse(Subscription.covered_streets_geojson(hostname))
 
 
+def all_streets_per_city(request):
+    hostname = request.GET.get('site', None)
+    return JsonResponse(Street.all_streets_geojson(hostname))
+
+
 @csrf_exempt
 def subscribe(request, street_pk):
     if request.method == 'POST':
