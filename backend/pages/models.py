@@ -6,6 +6,8 @@ from wagtail.core import blocks
 from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel
 from wagtail.embeds.blocks import EmbedBlock
 from wagtail.images.blocks import ImageChooserBlock
+from wagtail.images.models import Image
+from wagtail.images.edit_handlers import ImageChooserPanel
 
 from backend.streetsignup.models import City
 
@@ -16,6 +18,13 @@ RICHTEXT_FEATURES = ['h2', 'h3', 'h4', 'ul', 'ol', 'bold', 'italic', 'link', 'hr
 
 
 class HomePage(Page):
+    background_image = models.ForeignKey(
+        Image,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+'
+    )
     body = StreamField([
         ('title', blocks.CharBlock(form_classname='title', required=False)),
         ('paragraph', blocks.TextBlock(form_classname='full')),
@@ -24,6 +33,7 @@ class HomePage(Page):
     city = models.ForeignKey(City, related_name='homepage', on_delete=models.PROTECT)
 
     content_panels = Page.content_panels + [
+        ImageChooserPanel('background_image'),
         StreamFieldPanel('body'),
     ]
     settings_panels = Page.settings_panels + [

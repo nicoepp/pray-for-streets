@@ -1,6 +1,8 @@
 {% extends 'streetsignup/base.html' %}
 
+{% load static %}
 {% load wagtailcore_tags %}
+{% load wagtailimages_tags %}
 {% load menu_tags %}
 
 {% block holetitletag %}
@@ -116,6 +118,15 @@
 
     p {
         min-height: 4px;
+    }
+
+    header.masthead {
+    {% if page.background_image %}
+        {% image page.background_image min-2560x1440 as img %}
+        background-image: url("{{ img.url }}");
+    {% else %}
+        background-image: url("{% static 'assets/img/prayer-header-bg.jpg' %}");
+    {% endif %}
     }
 
     .masthead.homepage .first {

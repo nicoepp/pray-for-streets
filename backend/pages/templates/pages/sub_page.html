@@ -1,5 +1,6 @@
 {% extends 'streetsignup/base.html' %}
 
+{% load static %}
 {% load wagtailimages_tags %}
 {% load wagtailcore_tags %}
 {% load menu_tags %}
@@ -107,6 +108,18 @@
             padding-bottom: 2.5rem;
             background-position: center 75%;
         }
+
+        header.masthead {
+            {% with root_page=page.get_site.root_page %}
+            {% if root_page.background_image %}
+                {% image root_page.background_image min-2560x1440 as img %}
+                background-image: url("{{ img.url }}");
+            {% else %}
+                background-image: url("{% static 'assets/img/prayer-header-bg.jpg' %}");
+            {% endif %}
+            {% endwith %}
+        }
+
         @media (min-width: 768px) {
             header.masthead {
                 padding-top: 10rem;
