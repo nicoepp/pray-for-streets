@@ -99,6 +99,39 @@
     </section>
 {% endblock %}
 
+{% block footer %}
+  <div class="copyright py-4 text-center text-white">
+    <div class="container">
+    {% with homepage=page.get_site.root_page.homepage %}
+      <div class="row">
+        <div class="col-lg-6 h-100 text-center text-lg-left my-auto">
+          <ul class="list-inline mb-0">
+            {% if homepage.facebook or homepage.instagram %}
+            <li class="list-inline-item mr-3">
+              Find us on
+            </li>
+            {% endif %}
+            {% if homepage.facebook %}
+            <li class="list-inline-item mr-3" style="position: relative; top: 4px">
+              <a href="{{ homepage.facebook }}" class="text-white"><i class="fab fa-facebook fa-2x fa-fw"></i></a>
+            </li>
+            {% endif %}
+            {% if homepage.instagram %}
+            <li class="list-inline-item mr-3" style="position: relative; top: 4px">
+              <a href="{{ homepage.instagram }}" class="text-white"><i class="fab fa-instagram fa-2x fa-fw"></i></a>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+        <div class="col-lg-6 h-100 text-center text-lg-right my-auto p-4">
+          <small> {{ homepage.attribution }} </small>
+        </div>
+      </div>
+    {% endwith %}
+    </div>
+  </div>
+{% endblock %}
+
 {% block styles %}
     <style>
         .fixed-top { position: absolute; }

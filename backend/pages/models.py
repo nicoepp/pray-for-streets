@@ -3,7 +3,7 @@ from django.db import models
 from wagtail.core.models import Page
 from wagtail.core.fields import StreamField
 from wagtail.core import blocks
-from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel
+from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel, MultiFieldPanel
 from wagtail.embeds.blocks import EmbedBlock
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.images.models import Image
@@ -30,11 +30,23 @@ class HomePage(Page):
         ('paragraph', blocks.TextBlock(form_classname='full')),
         ('rich', blocks.RichTextBlock(form_classname='full', features=RICHTEXT_FEATURES)),
     ])
+    facebook = models.URLField(null=True, blank=True)
+    instagram = models.URLField(null=True, blank=True)
+    attribution = models.CharField(blank=True, default='', max_length=120)
     city = models.ForeignKey(City, related_name='homepage', on_delete=models.PROTECT)
 
     content_panels = Page.content_panels + [
         ImageChooserPanel('background_image'),
         StreamFieldPanel('body'),
+        MultiFieldPanel(
+            [
+                FieldPanel('facebook'),
+                FieldPanel('instagram'),
+                FieldPanel('attribution'),
+            ],
+            heading='Footer',
+            classname='collapsible',
+        ),
     ]
     settings_panels = Page.settings_panels + [
         FieldPanel('city'),
