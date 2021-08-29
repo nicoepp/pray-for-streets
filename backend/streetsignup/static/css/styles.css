@@ -10548,4 +10548,11 @@ h4 {
   width: 190px;
 }
 
+@media (max-width: 600px) {
+  /* for screens w/ small widths like iPhone */
+  .row .m-btn {
+    width: 170px;
+  }
+}
+
 
