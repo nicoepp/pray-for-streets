@@ -54,6 +54,12 @@ class HomePage(Page):
 
     parent_page_types = [Page]
 
+    def get_context(self, request, *args, **kwargs):
+        ctx = super().get_context(request, *args, **kwargs)
+        ctx['streets_covered'] = 0
+        ctx['streets_total'] = 1280
+        return ctx
+
 
 class MenuPage(Page):
     icon = models.CharField('Menu Icon', default='fa-info-circle', max_length=30)
