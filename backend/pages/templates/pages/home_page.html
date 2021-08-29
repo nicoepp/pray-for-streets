@@ -40,18 +40,23 @@
     <!-- Masthead-->
     <header class="masthead homepage">
         <div class="container">
-<!--            <div class="event-date masthead-subheading overheading">-->
-<!--                Sept 27 - Oct 3 2020-->
-<!--            </div>-->
-            <div class="event-title masthead-heading text-uppercase" style="margin-bottom: 2rem">
-                <div class="first">{{ page.city.name }}</div>
-                <div class="second">Neighbourhood</div>
-                <div class="third">Prayer Walk</div>
+            <!--
+            <div class="event-date masthead-subheading overheading">
+                Sept 27 - Oct 3 2020
+            </div>
+            -->
+            <div class="event-title masthead-heading">
+                <div>
+                    <span class="_1st">the</span><span class="_2nd">Prayer</span><span class="_3rd">Walk</span>
+                </div>
+                <div class="city-name">
+                   &nbsp;
+                    {% comment %}Abbotsford | Burnaby | South Surrey | Vancouver{% endcomment %}
+                </div>
             </div>
 
             <div class="masthead-subheading covered">
-                <!--{{ streets_covered }} out of {{ streets_total }} streets now covered-->
-                <p class="mb-0"> 649 of 1280 were covered Sept 27-Oct 3, 2020 </p>
+                {{ streets_covered }} out of {{ streets_total }} streets covered
             </div>
         </div>
     </header>
@@ -157,6 +162,9 @@
     {% if page.background_image %}
         {% image page.background_image min-2560x1440 as img %}
         background-image: url("{{ img.url }}");
+        background-position-x: center;
+        background-position-y: bottom;
+        background-size: cover;
     {% else %}
         background-image: url("{% static 'assets/img/prayer-header-bg.jpg' %}");
     {% endif %}
@@ -177,6 +185,39 @@
         line-height: 8rem;
         font-size: 175px
     }
+
+    .masthead.homepage .masthead-heading {
+        padding: 80px 0 80px 0;
+        margin-bottom: 2rem;
+
+        font-size: 130px;
+        line-height: 1.1;
+        font-family: 'Raleway', sans-serif;
+    }
+
+    .masthead.homepage .masthead-heading ._1st {
+        font-weight: 200;
+        opacity: 90%;
+        color: #333;
+    }
+    .masthead.homepage .masthead-heading ._2nd {
+        font-weight: 600;
+        text-transform: uppercase;
+        color: #fed136;
+    }
+    .masthead.homepage .masthead-heading ._3rd {
+        font-weight: 200;
+        text-transform: uppercase;
+        color: #fed136;
+    }
+    .masthead.homepage .masthead-heading .city-name {
+        font-size: 36px;
+        font-weight: 200;
+        text-transform: uppercase;
+        letter-spacing: .088rem;
+        color: #fed136;
+    }
+
     .masthead.homepage .masthead-subheading.overheading {
         font-size: 70px;
         font-style: normal;
@@ -186,7 +227,11 @@
 
     .masthead.homepage .masthead-subheading.covered {
         margin-bottom: 0;
+
         font-style: normal;
+        font-weight: 300;
+        font-family: 'Raleway', sans-serif;
+
         color: #fed136;
         position: relative;
         top: 0.9vw;
@@ -220,6 +265,26 @@
             font-style: normal;
             margin-top: -80px;
             margin-bottom: 80px;
+        }
+    }
+
+    @media (max-width: 1200px) {
+        .masthead.homepage .masthead-heading {
+            padding: 50px 0 50px 0;
+            font-size: 65px;
+        }
+        .masthead.homepage .masthead-heading .city-name {
+            font-size: 16px;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .masthead.homepage .masthead-heading {
+            padding: 30px 0 30px 0;
+            font-size: 35px;
+        }
+        .masthead.homepage .masthead-heading .city-name {
+            font-size: 35px;
         }
     }
   </style>
