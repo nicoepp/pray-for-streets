@@ -3,6 +3,7 @@
 {% load static %}
 {% load wagtailimages_tags %}
 {% load wagtailcore_tags %}
+{% load wagtailuserbar %}
 {% load menu_tags %}
 
 {% block titletag %}
@@ -14,6 +15,8 @@
 {% endblock %}
 
 {% block navigation %}
+    {% wagtailuserbar %}
+
     {% with page.get_site.root_page as site_root %}
     {% get_menu site_root as menu_entries %}
 

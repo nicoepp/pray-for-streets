@@ -4,6 +4,7 @@
 {% load wagtailcore_tags %}
 {% load wagtailimages_tags %}
 {% load menu_tags %}
+{% load wagtailuserbar %}
 
 {% block holetitletag %}
 <title>Abbotsford Neighbourhood Prayer Walk | Pray for Abbotsford | Sept 27 to Oct 3 </title>
@@ -37,6 +38,8 @@
 {% endblock %}
 
 {% block navigation %}
+    {% wagtailuserbar %}
+
     <!-- Masthead-->
     <header class="masthead homepage">
         <div class="container">
