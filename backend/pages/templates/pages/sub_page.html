@@ -142,13 +142,13 @@
         header.masthead {
             padding-top: 8.5rem;
             padding-bottom: 2.5rem;
-            background-position: center 75%;
+            background-position: center 85%;
         }
 
         header.masthead {
             {% with root_page=page.get_site.root_page %}
-            {% if root_page.background_image %}
-                {% image root_page.background_image min-2560x1440 as img %}
+            {% if root_page.specific.background_image %}
+                {% image root_page.specific.background_image original as img %}
                 background-image: url("{{ img.url }}");
             {% else %}
                 background-image: url("{% static 'assets/img/prayer-header-bg.jpg' %}");
