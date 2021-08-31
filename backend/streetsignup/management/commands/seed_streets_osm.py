@@ -2,7 +2,7 @@ from django.core.management.base import BaseCommand
 import json
 import osmnx as ox
 from backend.streetsignup.models import Street, Segment, City
-
+import geopandas as gp
 
 class Command(BaseCommand):
     help = 'Populates the Street and Segment models fetching data from OpenStreetMaps'
@@ -24,29 +24,29 @@ class Command(BaseCommand):
         graph = ox.graph_from_place(place, network_type='drive')
         nodes, streets = ox.graph_to_gdfs(graph)
         street_names = streets.name.tolist()
-        st = set()
-        for street in street_names:
-            if not street or street == 'nan':
-                continue
-            if isinstance(street, list):
-                for strt in street:
-                    st.add(strt)
-                continue
-            st.add(street)
+        street_coordinates = streets.geometry.tolist()
+
         if City.objects.filter(name=city_db).exists():
             c = City.objects.get(name=city_db)
         else:
             c = City.objects.create(name=city_db, province=province_name)
-        for street in st:
-            if not street or street == 'nan':
-                continue
-            if Street.objects.filter(name=street, city_site=c).exists():
-                s = Street.objects.get(name=street, city_site=c)
+        for i in range(0,len(street_names)):
+            if isinstance(street_names[i], list):
+                for j in range(0, len(street_names[i])):
+                    addCoordinates(street_names[i][j], street_coordinates[i], c)
             else:
-                s = Street.objects.create(name=street, city_site=c)
+                addCoordinates(street_names[i], street_coordinates[i], c)
 
-            df2 = streets[streets.name == street]
-            d = json.loads(df2.to_json())
-            if d.get('features'):
-                for segment in d.get('features'):
-                    Segment.objects.create(street=s, path=segment.get('geometry').get('coordinates'))
+
+def addCoordinates(street, coord, c):
+    if not street or street == 'nan':
+        return
+    if Street.objects.filter(name=street, city_site=c).exists():
+        s = Street.objects.get(name=street, city_site=c)
+    else:
+        s = Street.objects.create(name=street, city_site=c)
+
+    d = json.loads(gp.GeoSeries(coord).to_json())
+    if d.get('features'):
+        for segment in d.get('features'):
+            Segment.objects.create(street=s, path=segment.get('geometry').get('coordinates'))
