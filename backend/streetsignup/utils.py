@@ -80,6 +80,9 @@ def send_confirmation_mail(name, email, token, street_name, city):
     elif 'vancouver' in site.hostname:
         template_id = 3135247
 
+    if not MJ_APIKEY_PUBLIC or not MJ_APIKEY_PRIVATE:
+        print('Confirmation email sending error: MailJet Env vars should be set!')
+
     mailjet = Client(auth=(MJ_APIKEY_PUBLIC, MJ_APIKEY_PRIVATE), version='v3.1')
     data = {
         'Messages': [
@@ -108,13 +111,12 @@ def send_confirmation_mail(name, email, token, street_name, city):
             print(f'Tried sending to: {name} <{email}>')
             sys.stdout.flush()
             return False
-        print(f"Confirmation email sent to: {name} <{email}> => ", resp)
+        print(f"Confirmation email sent to: {name} <{email}> => ", resp.content)
         sys.stdout.flush()
         return True
     except ApiError as e:
         print("Confirmation email sending error: {0}".format(e))
         print(f'Tried sending to: {name} <{email}>')
-        print(e)
         sys.stdout.flush()
         return False
 
