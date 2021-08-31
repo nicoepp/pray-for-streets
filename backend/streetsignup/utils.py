@@ -62,7 +62,7 @@ MJ_APIKEY_PUBLIC = os.environ.setdefault('MJ_APIKEY_PUBLIC', '')
 MJ_APIKEY_PRIVATE = os.environ.setdefault('MJ_APIKEY_PRIVATE', '')
 
 
-def send_confirmation_mail(name, email, token, street_name='', city=None):
+def send_confirmation_mail(name, email, token, street_name, city):
     """
     This call sends a message to the given recipient with vars and custom vars.
     """

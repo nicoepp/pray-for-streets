@@ -97,10 +97,12 @@ def subscribe(request, street_pk):
             subs.full_clean()  # can throw ValidationError
             if not recaptcha_valid(form.get('token', '')):
                 return JsonResponse({'success': False, 'token': 'reCAPTCHA invalid'}, status=400)
+            city = street.city_site
             resp = send_confirmation_mail(subs.name,
                                           contact.email,
                                           street_name=street.name,
-                                          token=contact.verification_token)
+                                          token=contact.verification_token,
+                                          city=city)
             if resp:
                 subs.save()
                 return JsonResponse({'success': True, 'subscription_id': subs.pk})
