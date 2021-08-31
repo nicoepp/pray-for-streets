@@ -14,6 +14,8 @@
     {% endif %}
 {% endblock %}
 
+{% block city %}{% if page.get_site.root_page.specific.city %}{{ page.get_site.root_page.specific.city.name }}{% endif %}{% endblock %}
+
 {% block navigation %}
     {% wagtailuserbar %}
 

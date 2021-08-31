@@ -7,35 +7,8 @@
 {% load wagtailuserbar %}
 
 {% block holetitletag %}
-<title>Abbotsford Neighbourhood Prayer Walk | Pray for Abbotsford | Sept 27 to Oct 3 </title>
+<title>thePRAYERWALK | {{ page.city.name }} | Sept 26 to Oct 2 </title>
 {% endblock holetitletag %}
-
-{% block structureddata %}
-<script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Event",
-        "name": "Abbotsford Neighbourhood Prayer Walk",
-        "startDate": "2020-09-23",
-        "endDate": "2020-10-03",
-        "eventStatus": "https://schema.org/EventScheduled",
-        "location": {
-            "@type": "City",
-            "name": "Abbotsford",
-            "address": {
-              "@type": "PostalAddress",
-              "addressLocality": "Abbotsford"
-            }
-        },
-        "description": "Join us to see every home, every street in Abbotsford being systematically prayed over.",
-        "organizer": {
-            "@type": "Organization",
-            "name": "Abbotsford Christian Leaders Network",
-            "url": "https://www.abbotsfordchristianleaders.com"
-        }
-    }
-</script>
-{% endblock %}
 
 {% block navigation %}
     {% wagtailuserbar %}
@@ -43,11 +16,9 @@
     <!-- Masthead-->
     <header class="masthead homepage">
         <div class="container">
-            <!--
             <div class="event-date masthead-subheading overheading">
-                Sept 27 - Oct 3 2020
+                Sept 26 to Oct 2
             </div>
-            -->
             <div class="event-title masthead-heading">
                 <div>
                     <span class="_1st">the</span><span class="_2nd">Prayer</span><span class="_3rd">Walk</span>
@@ -219,8 +190,11 @@
     }
 
     .masthead.homepage .masthead-subheading.overheading {
-        font-size: 70px;
+        font-size: 45px;
         font-style: normal;
+        font-weight: 300;
+        font-family: 'Raleway', sans-serif;
+        color: #fed136;
         margin-top: -90px;
         margin-bottom: 90px;
     }
@@ -261,7 +235,7 @@
             font-size: 87px
         }
         .masthead.homepage .masthead-subheading.overheading {
-            font-size: 45px;
+            font-size: 30px;
             font-style: normal;
             margin-top: -80px;
             margin-bottom: 80px;
