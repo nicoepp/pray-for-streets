@@ -4,6 +4,7 @@ import osmnx as ox
 from backend.streetsignup.models import Street, Segment, City
 import geopandas as gp
 
+
 class Command(BaseCommand):
     help = 'Populates the Street and Segment models fetching data from OpenStreetMaps'
 
@@ -30,15 +31,15 @@ class Command(BaseCommand):
             c = City.objects.get(name=city_db)
         else:
             c = City.objects.create(name=city_db, province=province_name)
-        for i in range(0,len(street_names)):
-            if isinstance(street_names[i], list):
-                for j in range(0, len(street_names[i])):
-                    addCoordinates(street_names[i][j], street_coordinates[i], c)
+        for i, str_name in enumerate(street_names):
+            if isinstance(str_name, list):
+                for j in range(0, len(str_name)):
+                    add_coordinates(str_name[j], street_coordinates[i], c)
             else:
-                addCoordinates(street_names[i], street_coordinates[i], c)
+                add_coordinates(str_name, street_coordinates[i], c)
 
 
-def addCoordinates(street, coord, c):
+def add_coordinates(street, coord, c):
     if not street or street == 'nan':
         return
     if Street.objects.filter(name=street, city_site=c).exists():
