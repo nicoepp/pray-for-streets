@@ -1,5 +1,6 @@
 import json
 import os
+import sys
 
 from django.contrib.auth.models import User
 from django.utils.crypto import get_random_string
@@ -105,13 +106,16 @@ def send_confirmation_mail(name, email, token, street_name='', city=None):
         if not resp.status_code == 200:
             print("Confirmation email sending error: {0}".format(resp.reason))
             print(f'Tried sending to: {name} <{email}>')
+            sys.stdout.flush()
             return False
         print(f"Confirmation email sent to: {name} <{email}> => ", resp)
+        sys.stdout.flush()
         return True
     except ApiError as e:
         print("Confirmation email sending error: {0}".format(e))
         print(f'Tried sending to: {name} <{email}>')
         print(e)
+        sys.stdout.flush()
         return False
 
 
