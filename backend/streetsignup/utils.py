@@ -3,9 +3,11 @@ import os
 
 from django.contrib.auth.models import User
 from django.utils.crypto import get_random_string
+from mailjet_rest.client import ApiError
 
 from sendgrid.helpers.mail import Mail, To
 from sendgrid import SendGridAPIClient
+from mailjet_rest import Client
 import requests
 
 
@@ -55,42 +57,61 @@ FROM_EMAIL = 'Abbotsford Neighbourhood Prayer Walk <info@prayforabbotsford.com>'
 TEMPLATE_ID = 'd-5f4bb94f40e3414a9784f9699b31e429'
 
 
-def send_confirmation_mail(name, email, token, street_name=''):
-    from_mailgun_email = FROM_EMAIL.replace('@pray', '@m.pray')
-    try:
-        key = os.environ.get('MAILGUN_API_KEY', None)
-        if not key:
-            print('There is no MG API key set')
-            return False
-        resp = requests.post(
-            "https://api.mailgun.net/v3/m.prayforabbotsford.com/messages",
-            auth=("api", key),
-            data={
-                "from": from_mailgun_email,
-                "h:Reply-To": FROM_EMAIL,
-                "to": f"{name} <{email}>",
-                "subject": "Thank you for praying with us! Confirm your Email",
-                "template": "sign_up_confirmation",
-                'h:X-Mailgun-Variables': json.dumps({
-                    'person_name': name,
-                    'street_name': street_name,
-                    'email_token': token,
-                })
+MJ_APIKEY_PUBLIC = os.environ.setdefault('MJ_APIKEY_PUBLIC', '')
+MJ_APIKEY_PRIVATE = os.environ.setdefault('MJ_APIKEY_PRIVATE', '')
+
+
+def send_confirmation_mail(name, email, token, street_name='', city=None):
+    """
+    This call sends a message to the given recipient with vars and custom vars.
+    """
+    homepage = city.homepage.get()
+    site = homepage.get_site()
+
+    template_id = 3131695
+
+    if 'abbotsford' in site.hostname:
+        template_id = 3131695
+    elif 'burnaby' in site.hostname:
+        template_id = 3135239
+    elif 'surrey' in site.hostname:
+        template_id = 3135245
+    elif 'vancouver' in site.hostname:
+        template_id = 3135247
+
+    mailjet = Client(auth=(MJ_APIKEY_PUBLIC, MJ_APIKEY_PRIVATE), version='v3.1')
+    data = {
+        'Messages': [
+            {
+                "From": {
+                    "Email": f"info@{site.hostname}",
+                    "Name": f"thePRAYERWALK | {city.name}"
+                },
+                "To": [{"Email": email, "Name": name}],
+                "TemplateID": template_id,
+                "TemplateLanguage": True,
+                "Subject": "Thank you for praying with us! Confirm your Email",
+                "Variables": {
+                    "person_name": name,
+                    "street_name": street_name,
+                    "confirm_link": f"{site.root_url}/email/confirm/{token}"
+                }
             }
-        )
+        ]
+    }
+    try:
+        resp = mailjet.send.create(data=data)
+
         if not resp.status_code == 200:
-            print("Confirmation email sending error: {0}".format(resp.status_code))
+            print("Confirmation email sending error: {0}".format(resp.reason))
             print(f'Tried sending to: {name} <{email}>')
             return False
-        print(f"Confirmation email sent to: {name} <{email}> => ", resp.content)
+        print(f"Confirmation email sent to: {name} <{email}> => ", resp)
         return True
-    except requests.RequestException as e:
+    except ApiError as e:
         print("Confirmation email sending error: {0}".format(e))
         print(f'Tried sending to: {name} <{email}>')
-        try:
-            print(e.response.content)
-        except Exception:
-            pass
+        print(e)
         return False
 
 
