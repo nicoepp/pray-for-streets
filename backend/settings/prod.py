@@ -1,9 +1,11 @@
 import os
 import django_heroku
 from .gcloud_credentials import get_google_credentials
+from .sentry import init as sentry_init
 
 from .dev import *
 
+sentry_init()
 
 # Activate Django-Heroku.
 django_heroku.settings(locals())
