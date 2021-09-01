@@ -18,13 +18,8 @@ RICHTEXT_FEATURES = ['h2', 'h3', 'h4', 'ul', 'ol', 'bold', 'italic', 'link', 'hr
 
 
 class HomePage(Page):
-    background_image = models.ForeignKey(
-        Image,
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name='+'
-    )
+    logotype = models.ForeignKey(Image,         null=True, blank=True, on_delete=models.SET_NULL, related_name='+')
+    background_image = models.ForeignKey(Image, null=True, blank=True, on_delete=models.SET_NULL, related_name='+')
     body = StreamField([
         ('title', blocks.CharBlock(form_classname='title', required=False)),
         ('paragraph', blocks.TextBlock(form_classname='full')),
@@ -36,6 +31,7 @@ class HomePage(Page):
     city = models.ForeignKey(City, related_name='homepage', on_delete=models.PROTECT)
 
     content_panels = Page.content_panels + [
+        ImageChooserPanel('logotype'),
         ImageChooserPanel('background_image'),
         StreamFieldPanel('body'),
         MultiFieldPanel(

@@ -20,16 +20,16 @@
                 Sept 26 to Oct 2
             </div>
             <div class="event-title masthead-heading">
+                {% if page.logotype %}
+                    {% image page.logotype fill-1000x400 class="img-fluid" alt="thePRAYERWALK" %}
+                {% else %}
                 <div>
                     <span class="_1st">the</span><span class="_2nd">Prayer</span><span class="_3rd">Walk</span>
                 </div>
-                <div class="city-name">
-                   &nbsp;
-                    {% comment %}Abbotsford | Burnaby | South Surrey | Vancouver{% endcomment %}
-                </div>
+                {% endif %}
             </div>
 
-            <div class="masthead-subheading covered">
+            <div class="masthead-subheading covered" data-nosnippet>
                 {{ streets_covered }} out of {{ streets_total }} streets covered
             </div>
         </div>
