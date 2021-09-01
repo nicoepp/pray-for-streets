@@ -10492,32 +10492,6 @@ section#contact form#contactForm :-ms-input-placeholder {
   color: #ced4da;
 }
 
-@font-face {
-  font-family: 'FrederickSans Regular';
-  font-style: normal;
-  font-weight: normal;
-  src: local('FrederickSans Regular'), url('../fonts/FrederickSans.woff') format('woff');
-}
-
-
-@font-face {
-font-family: 'FrederickSans Italic';
-font-style: normal;
-font-weight: normal;
-src: local('FrederickSans Italic'), url('../fonts/FrederickSans-Italic.woff') format('woff');
-}
-
-header.masthead .masthead-heading {
-  font-size: 130px;
-  font-weight: normal;
-  font-family: 'FrederickSans Regular';
-}
-
-header.masthead .masthead-subheading {
-  font-weight: normal;
-  font-family: 'FrederickSans Regular';
-}
-
 h4 {
   font-size: 16px;
 }
