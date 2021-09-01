@@ -56,8 +56,10 @@ class HomePage(Page):
 
     def get_context(self, request, *args, **kwargs):
         ctx = super().get_context(request, *args, **kwargs)
-        ctx['streets_covered'] = 0
-        ctx['streets_total'] = 1280
+
+        streets = self.city.street_set
+        ctx['streets_covered'] = streets.annotate(subs=models.Count('subscriptions')).filter(subs__gt=0).count()
+        ctx['streets_total'] = streets.count()
         return ctx
 
 
