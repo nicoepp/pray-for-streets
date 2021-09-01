@@ -134,7 +134,7 @@
 
     header.masthead {
     {% if page.background_image %}
-        {% image page.background_image original as img %}
+        {% image page.background_image min-2560x1440 as img %}
         background-image: url("{{ img.url }}");
     {% else %}
         background-image: url("{% static 'assets/img/prayer-header-bg.jpg' %}");
