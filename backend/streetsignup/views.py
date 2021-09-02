@@ -11,7 +11,7 @@ from django.views.generic import TemplateView
 
 from backend.streetsignup.models import Street, Subscription, Contact, City
 from backend.streetsignup.utils import recaptcha_valid, send_confirmation_mail, resend_mail, ask_for_consent_email, \
-    send_street_co_subscriber_list
+    send_street_co_subscriber_list, add_to_mailjet
 from backend.pages.models import HomePage
 from wagtail.core.models import Site
 
@@ -149,6 +149,12 @@ def verify_email(request, token):
         contact = all_contacts.first() if all_contacts.exists() else all_subs.first().contact
         if not contact.verified:
             contact.verified = True
+
+            # Add to corresponding subscriber list
+            cities = City.objects.filter(street__subscriptions__contact=contact)
+            success = add_to_mailjet(contact, cities)
+            if not success:
+                contact.verified = False
             contact.save()
 
             # If has streets with multiple subscribers (which hadn't multiple before)

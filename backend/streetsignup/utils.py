@@ -82,6 +82,7 @@ def send_confirmation_mail(name, email, token, street_name, city):
 
     if not MJ_APIKEY_PUBLIC or not MJ_APIKEY_PRIVATE:
         print('Confirmation email sending error: MailJet Env vars should be set!')
+        return False
 
     mailjet = Client(auth=(MJ_APIKEY_PUBLIC, MJ_APIKEY_PRIVATE), version='v3.1')
     data = {
@@ -106,7 +107,7 @@ def send_confirmation_mail(name, email, token, street_name, city):
     try:
         resp = mailjet.send.create(data=data)
 
-        if not resp.status_code == 200:
+        if not resp.status_code // 100 == 2:  # not 2xx
             print("Confirmation email sending error: {0}".format(resp.reason))
             print(f'Tried sending to: {name} <{email}>')
             sys.stdout.flush()
@@ -221,3 +222,45 @@ def reminder_email(name, email, token, apikey=None, subject=None, template=None)
             pass
         return False
 
+
+CONTACT_LIST_ID = {
+    "Abbotsford": 48596,
+    "Burnaby": 48040,
+    "South Surrey": 48597,
+    "Vancouver": 48598
+}
+
+
+def add_to_mailjet(contact, cities: []):
+    results = set()
+    if not MJ_APIKEY_PUBLIC or not MJ_APIKEY_PRIVATE:
+        print('Confirmation email sending error: MailJet Env vars should be set!')
+        return False
+
+    mailjet = Client(auth=(MJ_APIKEY_PUBLIC, MJ_APIKEY_PRIVATE), version='v3')
+    try:
+        for city in cities:
+            list_id = CONTACT_LIST_ID[city.name]
+            data = {
+                'Name': contact.name,
+                'Properties': {},
+                'Action': "addnoforce",
+                'Email': contact.email
+            }
+            resp = mailjet.contactslist_managecontact.create(id=list_id, data=data)
+
+            if not resp.status_code // 100 == 2:  # not 2xx
+                print("Add contact error: {0}".format(resp.reason))
+                print(f'Tried adding: {contact.name} <{contact.email}> to {city.name}')
+                sys.stdout.flush()
+                results.add(False)
+                continue
+            print(f"Add contact successful: {contact.name} <{contact.email}> to {city.name} => ", resp.content)
+            sys.stdout.flush()
+            results.add(True)
+    except ApiError as e:
+        print("Add contact error exception: {0}".format(e))
+        print(f'Tried adding: {contact.name} <{contact.email}>')
+        sys.stdout.flush()
+        results.add(False)
+    return all(results)
