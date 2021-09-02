@@ -158,9 +158,9 @@ def verify_email(request, token):
                 street = contact_sub.street
                 street_subs = street.subscriptions.filter(contact__verified=True, contact__unsubscribed=False)
                 if street_subs.count() > 1:  # or just at equal two?
-                    for sub in street_subs:
-                        ct = sub.contact
-                        if not ct.sharing_consent and not ct.ask_consent_email_sent:
+                    for sub in street_subs:               # We should hook up to unsub events and update DB accordingly
+                        ct = sub.contact                  # before sending out these sharing consent emails
+                        if not ct.sharing_consent and not ct.ask_consent_email_sent and False:
                             if ask_for_consent_email(ct.name, ct.email, ct.verification_token):
                                 ct.ask_consent_email_sent = True
                                 ct.save()
