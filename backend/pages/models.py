@@ -14,7 +14,7 @@ from backend.streetsignup.models import City
 
 Page.show_in_menus_default = True
 
-RICHTEXT_FEATURES = ['h2', 'h3', 'h4', 'ul', 'ol', 'bold', 'italic', 'link', 'hr']
+RICHTEXT_FEATURES = ['h2', 'h3', 'h4', 'ul', 'ol', 'bold', 'italic', 'link', 'document-link', 'hr']
 
 
 class HomePage(Page):
