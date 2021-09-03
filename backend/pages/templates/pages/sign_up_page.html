@@ -5,5 +5,10 @@
 {% endblock %}
 
 {% block content %}
-    <iframe src="{% url 'app' %}" width="100%" height="850px" frameBorder="0" scrolling="no"></iframe>
+    <iframe
+            src="{% url 'app' %}{% if site_root.latitude %}?lat={{ site_root.latitude }}&long={{ site_root.longitude }}{% endif %}"
+            width="100%"
+            height="850px"
+            frameBorder="0" scrolling="no"
+    ></iframe>
 {% endblock %}

@@ -20,7 +20,7 @@ export default {
       const map = new mapboxgl.Map({
         container: this.$el,
         style: 'mapbox://styles/mapbox/light-v10',
-        center: [-122.36109, 49.06213],
+        center: this.mapCenter(),
         zoom: 12,
       });
       this.map = map;
@@ -65,6 +65,13 @@ export default {
         map.addControl(new mapboxgl.NavigationControl());
         map.addControl(new mapboxgl.FullscreenControl());
       }
+    },
+    mapCenter() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const lat = urlParams.get('lat');
+      const long = urlParams.get('long');
+      if (!lat || !long) return [-122.36109, 49.06213];
+      return [long, lat];
     },
     fitBounds() {
       const firstCoords = this.streetGeoJson.features[0].geometry.coordinates[0];

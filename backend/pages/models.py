@@ -3,7 +3,7 @@ from django.db import models
 from wagtail.core.models import Page
 from wagtail.core.fields import StreamField
 from wagtail.core import blocks
-from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel, MultiFieldPanel
+from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel, MultiFieldPanel, FieldRowPanel
 from wagtail.embeds.blocks import EmbedBlock
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.images.models import Image
@@ -28,6 +28,8 @@ class HomePage(Page):
     facebook = models.URLField(null=True, blank=True)
     instagram = models.URLField(null=True, blank=True)
     attribution = models.CharField(blank=True, default='', max_length=120)
+    latitude = models.FloatField(null=True, blank=True)
+    longitude = models.FloatField(null=True, blank=True)
     city = models.ForeignKey(City, related_name='homepage', on_delete=models.PROTECT)
 
     content_panels = Page.content_panels + [
@@ -46,6 +48,13 @@ class HomePage(Page):
     ]
     settings_panels = Page.settings_panels + [
         FieldPanel('city'),
+        FieldRowPanel(
+            [
+                FieldPanel('latitude'),
+                FieldPanel('longitude'),
+            ],
+            heading='Map Center',
+        ),
     ]
 
     parent_page_types = [Page]
@@ -61,6 +70,13 @@ class HomePage(Page):
 
 class MenuPage(Page):
     icon = models.CharField('Menu Icon', default='fa-info-circle', max_length=30)
+
+    def get_context(self, request, *args, **kwargs):
+        ctx = super().get_context(request, *args, **kwargs)
+
+        ctx['site_root'] = self.get_site().root_page.specific
+
+        return ctx
 
     class Meta:
         abstract = True

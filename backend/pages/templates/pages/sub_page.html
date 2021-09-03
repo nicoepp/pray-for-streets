@@ -14,12 +14,11 @@
     {% endif %}
 {% endblock %}
 
-{% block city %}{% if page.get_site.root_page.specific.city %}{{ page.get_site.root_page.specific.city.name }}{% endif %}{% endblock %}
+{% block city %}{% if site_root.city %}{{ site_root.city.name }}{% endif %}{% endblock %}
 
 {% block navigation %}
     {% wagtailuserbar %}
 
-    {% with page.get_site.root_page as site_root %}
     {% get_menu site_root as menu_entries %}
 
     <!-- Navigation-->
@@ -43,7 +42,6 @@
             </div>
         </div>
     </nav>
-    {% endwith %}
     <!-- Masthead-->
     <header class="masthead">
         <div class="container">

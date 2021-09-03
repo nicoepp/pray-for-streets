@@ -229,7 +229,7 @@ export default {
           this.errorMessage = `Error: ${e.response.data.email}`;
           return;
         }
-        this.errorMessage = 'Sorry, something went wrong while submitting the form 2';
+        this.errorMessage = 'Sorry, something went wrong while submitting';
         console.log(e.response.data);
       }
     },
