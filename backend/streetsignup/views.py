@@ -25,8 +25,6 @@ mapapp_view = never_cache(TemplateView.as_view(template_name='mapapp.html'))
 about_view = never_cache(TemplateView.as_view(template_name='streetsignup/other/about.html'))
 stories_view = never_cache(TemplateView.as_view(template_name='streetsignup/other/stories.html'))
 
-sitemap_view = never_cache(TemplateView.as_view(template_name='streetsignup/other/sitemap.xml'))
-
 
 @never_cache
 def index_view(request):

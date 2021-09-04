@@ -20,9 +20,9 @@ from django.conf.urls.static import static
 from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.core import urls as wagtail_urls
 from wagtail.documents import urls as wagtaildocs_urls
+from wagtail.contrib.sitemaps.views import sitemap
 
 from .streetsignup.urls import api_urlpatterns, email_urlpatterns, embed_urlpatterns
-from .streetsignup.views import sitemap_view
 
 urlpatterns = [
     path('cms/', include(wagtailadmin_urls)),
@@ -30,7 +30,7 @@ urlpatterns = [
     path('api/', include(api_urlpatterns)),
     path('embed/', include(embed_urlpatterns)),
     path('email/', include(email_urlpatterns)),
-    path('sitemap.xml', sitemap_view, name='sitemap'),
+    path('sitemap.xml', sitemap),
     path('', include(wagtail_urls)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
