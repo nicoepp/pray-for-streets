@@ -1,4 +1,4 @@
-# Pray for Streets
+# The Prayer Walk
 
 Front- and Backend for Abbotsford Neighbourhood Prayer Walk
 
