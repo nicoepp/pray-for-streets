@@ -10,7 +10,7 @@ from django.views.decorators.http import require_POST
 from django.views.generic import TemplateView
 
 from backend.streetsignup.models import Street, Subscription, Contact, City
-from backend.streetsignup.utils import recaptcha_valid, send_confirmation_mail, resend_mail, ask_for_consent_email, \
+from backend.streetsignup.utils import recaptcha_valid, send_confirmation_mail, ask_for_consent_email, \
     send_street_co_subscriber_list, add_to_mailjet
 from backend.pages.models import HomePage
 from wagtail.core.models import Site
@@ -115,28 +115,6 @@ def subscribe(request, street_pk):
             return JsonResponse(resp, status=400)
 
     return JsonResponse({'success': False}, status=404)
-
-
-@csrf_exempt
-@require_POST
-def receive_email(request):
-    # Add basic auth security here
-    if request.method == 'POST':
-        to = request.POST.get('to', '')
-        from_ = request.POST.get('from')
-        subject = request.POST.get('subject', '')
-        text = request.POST.get('text', '')
-        html = request.POST.get('html', '')
-
-        if to in ['info@prayforabbotsford.com', 'stories@prayforabbotsford.com'] or '<info@' in to:
-            if not resend_mail(from_, to, subject, text, html):
-                return HttpResponse(status=500)
-
-        print('--- Email from SendGrid ---')
-        print('From:', from_)
-        print('To:', to)
-        print('Subject:', subject)
-    return HttpResponse(status=200)
 
 
 def verify_email(request, token):

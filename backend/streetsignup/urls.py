@@ -16,7 +16,6 @@ embed_urlpatterns = [
 ]
 
 email_urlpatterns = [
-    path('inbound', views.receive_email, name='email'),
     path('confirm/<token>', views.verify_email, name='verify_email'),
     path('unsubscribe/<token>', views.unsubscribe_email, name='unsubscribe'),
     path('consent_to_share/<token>', views.consent_sharing_email, name='consent'),
