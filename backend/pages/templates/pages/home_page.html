@@ -7,7 +7,7 @@
 {% load wagtailuserbar %}
 
 {% block holetitletag %}
-<title>thePRAYERWALK | {{ page.city.name }} | Sept 26 to Oct 2 </title>
+<title>thePRAYERWALK | {{ page.city.name }} {% if page.event_date %} | {{ page.event_date }} {% endif %} </title>
 {% endblock holetitletag %}
 
 {% block navigation %}
@@ -17,7 +17,9 @@
     <header class="masthead homepage">
         <div class="container">
             <div class="event-date masthead-subheading overheading">
-                Sept 26 to Oct 2
+                {% if page.event_date %}
+                    {{ page.event_date }}
+                {% endif %}
             </div>
             <div class="event-title masthead-heading">
                 {% if page.logotype %}

@@ -18,6 +18,7 @@ RICHTEXT_FEATURES = ['h2', 'h3', 'h4', 'ul', 'ol', 'bold', 'italic', 'link', 'do
 
 
 class HomePage(Page):
+    event_date = models.CharField(blank=True, default='', max_length=50)
     logotype = models.ForeignKey(Image,         null=True, blank=True, on_delete=models.SET_NULL, related_name='+')
     background_image = models.ForeignKey(Image, null=True, blank=True, on_delete=models.SET_NULL, related_name='+')
     body = StreamField([
@@ -33,6 +34,7 @@ class HomePage(Page):
     city = models.ForeignKey(City, related_name='homepage', on_delete=models.PROTECT)
 
     content_panels = Page.content_panels + [
+        FieldPanel('event_date'),
         ImageChooserPanel('logotype'),
         ImageChooserPanel('background_image'),
         StreamFieldPanel('body'),
