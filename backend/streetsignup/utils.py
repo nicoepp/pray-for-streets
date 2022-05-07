@@ -75,6 +75,8 @@ def send_confirmation_mail(name, email, token, street_name, city):
         template_id = 3135245
     elif 'vancouver' in site.hostname:
         template_id = 3135247
+    elif 'ridgemeadows' in site.hostname:
+        template_id = 3918603
 
     if not MJ_APIKEY_PUBLIC or not MJ_APIKEY_PRIVATE:
         print('Confirmation email sending error: MailJet Env vars should be set!')
@@ -134,7 +136,8 @@ CONTACT_LIST_ID = {
     "Abbotsford": 48596,
     "Burnaby": 48040,
     "South Surrey": 48597,
-    "Vancouver": 48598
+    "Vancouver": 48598,
+    "Ridge Meadows": 64017,
 }
 
 
