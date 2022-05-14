@@ -3,7 +3,7 @@ import json
 from django.core.exceptions import ValidationError
 from django.db.models import Count
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpRequest
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
@@ -146,7 +146,8 @@ def verify_email(request, token):
                             if ask_for_consent_email(ct.name, ct.email, ct.verification_token):
                                 ct.ask_consent_email_sent = True
                                 ct.save()
-    return render(request, 'streetsignup/email/verify.html', {'success': success})
+
+    return render(request, 'streetsignup/email/verify.html', {'success': success, 'bg_img': get_bg_image(request)})
 
 
 def unsubscribe_email(request, token):
@@ -157,7 +158,7 @@ def unsubscribe_email(request, token):
         contact = all_contacts.first() if all_contacts.exists() else all_subs.first().contact
         contact.unsubscribed = True
         contact.save()
-    return render(request, 'streetsignup/email/unsubscribe.html', {'success': success})
+    return render(request, 'streetsignup/email/unsubscribe.html', {'success': success, 'bg_img': get_bg_image(request)})
 
 
 def consent_sharing_email(request, token):
@@ -178,4 +179,17 @@ def consent_sharing_email(request, token):
                         ct = sub.contact
                         emails = street_subs.exclude(contact=ct).values_list('contact__name', 'contact__email')
                         send_street_co_subscriber_list(ct.name, ct.email, emails, street_name=street.name)
-    return render(request, 'streetsignup/email/consent.html', {'success': success})
+    return render(request, 'streetsignup/email/consent.html', {'success': success, 'bg_img': get_bg_image(request)})
+
+
+def get_bg_image(request: HttpRequest):
+    host = request.get_host()
+    if not host:
+        return None
+
+    sites = Site.objects.filter(hostname=host.split(':')[0])
+
+    if sites.exists():
+        root_page = sites.first().root_page
+        return HomePage.objects.filter(pk=root_page.pk).first().background_image
+    return None
