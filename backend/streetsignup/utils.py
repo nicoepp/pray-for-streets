@@ -144,7 +144,7 @@ CONTACT_LIST_ID = {
 def add_to_mailjet(contact, cities: []):
     results = set()
     if not MJ_APIKEY_PUBLIC or not MJ_APIKEY_PRIVATE:
-        print('Confirmation email sending error: MailJet Env vars should be set!')
+        print('Add to contact list error: MailJet Env vars should be set!')
         return False
 
     mailjet = Client(auth=(MJ_APIKEY_PUBLIC, MJ_APIKEY_PRIVATE), version='v3')
@@ -174,3 +174,49 @@ def add_to_mailjet(contact, cities: []):
         sys.stdout.flush()
         results.add(False)
     return all(results)
+
+
+def add_all_missing_to_mailjet(city_name, all_contacts: []):
+    list_id = CONTACT_LIST_ID[city_name]
+
+    if not MJ_APIKEY_PUBLIC or not MJ_APIKEY_PRIVATE:
+        print('Add to all missing error: MailJet Env vars should be set!')
+        return False
+
+    mailjet = Client(auth=(MJ_APIKEY_PUBLIC, MJ_APIKEY_PRIVATE), version='v3')
+
+    for contact in all_contacts:
+        resp = mailjet.contact_getcontactslists.get(id=contact.email)
+        if not resp.status_code // 100 == 2:  # not 2xx
+            print("Retrieve contact error: {0}".format(resp.reason))
+            print(f'Tried getting: {contact.name} <{contact.email}> to {city_name}')
+            continue
+        data = resp.json()['Data']
+        contact_lists = [ct['ListID'] for ct in data]
+
+        if list_id not in contact_lists:
+            if not contact.verified:
+                print(f'{contact.email} is not verified!')
+                continue
+            print(f'--  {contact.name} <{contact.email}> didn\'t exist in {city_name} list')
+
+            data = {
+                'Name': contact.name,
+                'Properties': {},
+                'Action': "addnoforce",
+                'Email': contact.email
+            }
+            resp = mailjet.contactslist_managecontact.create(id=list_id, data=data)
+
+            if not resp.status_code // 100 == 2:  # not 2xx
+                print("Add contact error: {0}".format(resp.reason))
+                print(f'Tried adding: {contact.name} <{contact.email}> to {city_name}')
+                continue
+            print(f"Add contact successful: {contact.name} <{contact.email}> to {city_name} => ", resp.content)
+
+
+def reset_subscriptions(city_name):
+    # Reset Contact db table
+    # Reset Subscription db table
+    # Reset Contact list in MailJet
+    pass
