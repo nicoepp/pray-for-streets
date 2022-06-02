@@ -1,6 +1,7 @@
 .DS_Store
 node_modules
 /venv/
+.venv/
 
 # local env files
 .env.local
@@ -26,6 +27,10 @@ pnpm-debug.log*
 
 # Build files
 /dist/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
 
 # Database
 /db.sqlite3
