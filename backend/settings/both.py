@@ -10,7 +10,7 @@ from .dev import *
 # yarn build
 # python manage.py collectstatic
 # export DJANGO_SETTINGS_MODULE=backend.settings.both
-# python mange.py runserver
+# python manage.py runserver
 #
 # * manage.py runserver
 # ** JS apps compiled by yarn
