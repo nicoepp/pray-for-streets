@@ -20,6 +20,7 @@ COPY --from=build /app ./
 
 RUN pip install --no-cache-dir -r requirements.txt
 
+ENV DJANGO_SETTINGS_MODULE backend.settings.build
 RUN python manage.py collectstatic --noinput
 
 # RUN python manage.py migrate
