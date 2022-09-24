@@ -1,8 +1,8 @@
-import django_heroku
+from .django_heroku import settings as dj_heroku_settings
 from .dev import *
 
 # Activate Django-Heroku.
-django_heroku.settings(locals())
+dj_heroku_settings(locals())
 
 DEBUG = False
 
