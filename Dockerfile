@@ -9,7 +9,7 @@ RUN yarn build
 
 RUN rm -rf node_modules
 
-FROM python:3.10
+FROM python:3.10-slim
 
 ENV PYTHONUNBUFFERED True
 
@@ -19,6 +19,12 @@ WORKDIR /app
 COPY --from=build /app ./
 
 RUN pip install --no-cache-dir -r requirements.txt
+
+RUN apt-get update \
+    && apt-get -y install libpq-dev gcc \
+    && pip install psycopg2
+
+RUN apt-get clean
 
 ENV DJANGO_SETTINGS_MODULE backend.settings.build
 RUN python manage.py collectstatic --noinput
