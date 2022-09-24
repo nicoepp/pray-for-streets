@@ -26,5 +26,5 @@ RUN python manage.py collectstatic --noinput
 # RUN python manage.py migrate
 
 
-CMD exec gunicorn backend.wsgi --bind 0.0.0.0:8000 --log-file=- --log-level=debug
+CMD exec gunicorn backend.wsgi --bind 0.0.0.0:8000 --max-requests=120 --log-file=- --log-level=info
 
