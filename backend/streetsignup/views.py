@@ -43,7 +43,10 @@ def media_view(request):
 def all_streets(request, site_name):
     print('We are in: ' + site_name)
 
-    root_page = Site.objects.filter(hostname=site_name).first().root_page
+    sites = Site.objects.filter(hostname=site_name)
+    if not sites:
+        return JsonResponse({'streets': []})
+    root_page = sites.first().root_page
     city = HomePage.objects.filter(pk=root_page.pk).first().city
 
     return JsonResponse({
