@@ -18,13 +18,12 @@ WORKDIR /app
 
 COPY --from=build /app ./
 
-RUN pip install --no-cache-dir -r requirements.txt
-
 RUN apt-get update \
-    && apt-get -y install libpq-dev gcc \
-    && pip install psycopg2
+    && apt-get -y install libpq-dev gcc
 
 RUN apt-get clean
+
+RUN pip install --no-cache-dir -r requirements.txt
 
 ENV DJANGO_SETTINGS_MODULE backend.settings.build
 RUN python manage.py collectstatic --noinput
