@@ -14,8 +14,9 @@
               <v-card>
                 <v-card-text>
                   <v-card-subtitle class="pl-9 pt-0">
-                    Please choose one street per family or group.
-                    There is a maximum of 3 registrants per Street.
+                    <!--Please choose one street per family or group.-->
+                    <!--There is a maximum of 3 registrants per Street.-->
+                    Sign up is currently closed. Thanks for the interest.
                   </v-card-subtitle>
                   <v-form v-if="step === 'st'">
                     <v-autocomplete
@@ -73,7 +74,8 @@
                 <v-card-text v-else>
                   <v-form v-if="step === 'rg'" v-model="validRules">
                     <v-card-subtitle v-if="!errorMessage">
-                      Please fill out contact details and submit to sign up and receive a reminder.
+                <!--Please fill out contact details and submit to sign up and receive a reminder.-->
+                      Sorry, sign up is closed.
                     </v-card-subtitle>
                     <v-card-subtitle v-else style="color: red">
                       {{ errorMessage }}
@@ -107,8 +109,12 @@
                 </v-card-text>
                 <v-card-actions v-if="!submitSuccess">
                   <v-spacer></v-spacer>
-                  <v-btn @click="step = 'm'">Back</v-btn>
-                  <v-btn @click="submit" color="primary" :disabled="!formValid">Submit</v-btn>
+                  <v-btn @click="step = 'm'">
+                    Back
+                  </v-btn>
+                  <v-btn @click="submit" color="primary" :disabled="!formValid || true">
+                    Submit
+                  </v-btn>
                 </v-card-actions>
               </v-card>
             </v-stepper-content>
