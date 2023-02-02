@@ -4,6 +4,7 @@ module.exports = {
   pages: {
     app: 'src/main.js',
     mapapp: 'src/map.js',
+    champion: 'src/champion.js',
   },
   transpileDependencies: [
     'vuetify',
