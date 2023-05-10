@@ -5,7 +5,8 @@ WORKDIR /app
 COPY . ./
 
 RUN yarn install
-RUN yarn build
+RUN --mount=type=secret,id=VUE_APP_RECAPTCHA_SITE_KEY \
+    VUE_APP_RECAPTCHA_SITE_KEY="$(cat /run/secrets/VUE_APP_RECAPTCHA_SITE_KEY)" yarn build
 
 RUN rm -rf node_modules
 
