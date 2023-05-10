@@ -75,7 +75,7 @@ def all_streets_per_city(request):
 
 @csrf_exempt
 def subscribe(request, street_pk):
-    if request.method == 'POST signupclosed':  # Prevent further signup for now
+    if request.method == 'POST':
         form = json.loads(request.body)
 
         try:
