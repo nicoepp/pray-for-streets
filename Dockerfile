@@ -29,8 +29,12 @@ RUN pip install --no-cache-dir -r requirements.txt
 ENV DJANGO_SETTINGS_MODULE backend.settings.build
 RUN python manage.py collectstatic --noinput
 
-# RUN python manage.py migrate
+RUN python manage.py migrate
 
+# Turn on swap to be able to have 2 gunicorn workers on a 256mb memory machine
+# From: https://www.joseferben.com/posts/django-on-flyio/
+RUN fallocate -l 512M /swapfile & chmod 0600 /swapfile & mkswap /swapfile & echo 10 > /proc/sys/vm/swappiness
+RUN swapon /swapfile
 
 CMD exec gunicorn backend.wsgi --bind 0.0.0.0:8000 --max-requests=120 --log-file=- --log-level=info
 
